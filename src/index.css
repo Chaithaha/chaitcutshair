@@ -1,0 +1,20 @@
+/**
+ * Main CSS Entry Point
+ * Imports all base styles
+ */
+
+/* Google Fonts: Manrope */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
+
+/* Design Tokens */
+@import './styles/base/variables.css';
+
+/* CSS Reset */
+@import './styles/base/reset.css';
+
+/* Global styles */
+body {
+  font-family: var(--font-family-base);
+  background-color: var(--color-white);
+  color: var(--color-black);
+}
