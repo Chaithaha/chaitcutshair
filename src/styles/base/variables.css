@@ -71,4 +71,30 @@
   --z-sticky: 50;
   --z-fixed: 100;
   --z-modal: 1000;
+
+  /* Hero specific */
+  --hero-gradient-start: rgba(0, 0, 0, 0.7);
+  --hero-gradient-end: rgba(0, 0, 0, 0.4);
+  --hero-animation-duration: 600ms;
+  --hero-animation-stagger: 150ms;
+  --hero-cta-hover-scale: 1.05;
+
+  /* Hero sizes (all px) */
+  --hero-headline-mobile: 48px;
+  --hero-headline-desktop: 72px;
+  --hero-subheadline-mobile: 16px;
+  --hero-subheadline-desktop: 20px;
+  --hero-cta-text: 12px;
+  --hero-cta-padding-v: 16px;
+  --hero-cta-padding-h: 40px;
+  --hero-cta-radius: 4px;
+  --hero-padding-mobile: 80px;
+  --hero-padding-desktop: 120px;
+  --hero-content-max-width: 600px;
+  --hero-element-gap: 24px;
+  --hero-accent-line-width: 80px;
+  --hero-accent-line-height: 2px;
+
+  /* Breakpoint */
+  --breakpoint-md: 768px;
 }
