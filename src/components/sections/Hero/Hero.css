@@ -1,164 +1,94 @@
 /**
- * Hero Component Styles
- * Full-width hero with background overlay and bold typography
- * BEM: Block = .hero
+ * Hero Styles
+ * Styles for the main hero section
  */
 
-/* ============================================
-   HERO CONTAINER
-============================================ */
-
+/* Main hero section */
 .hero {
   position: relative;
-  min-height: 100vh;
-  width: 100%;
+  color: var(--color-white);
+  padding-top: 96px;
+  padding-bottom: 128px;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+  text-align: center;
+}
+
+/* Container that holds hero content */
+.hero__container {
+  position: relative;
+  z-index: 2;
+  max-width: var(--container-max-width);
+  margin-left: auto;
+  margin-right: auto;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Main headline text */
+.hero__headline {
+  font-size: 48px;
+  font-weight: var(--font-weight-extrabold);
+  line-height: 1;
+  margin-bottom: 24px;
+  letter-spacing: var(--letter-spacing-tight);
+  text-transform: uppercase;
+}
+
+/* Lighter weight part of the headline */
+.hero__headline-light {
+  font-weight: var(--font-weight-normal);
+  opacity: 0.5;
+}
+
+/* Bold part of the headline */
+.hero__headline-bold {
+  font-weight: var(--font-weight-extrabold);
+}
+
+/* Subheadline text below the main headline */
+.hero__subheadline {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-top: 0;
+  margin-bottom: 48px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0.7;
+  font-weight: var(--font-weight-normal);
+  max-width: 500px;
+}
+
+/* Call-to-action button */
+.hero__cta {
+  background-color: var(--color-white);
+  color: var(--color-black);
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-left: 40px;
+  padding-right: 40px;
+  font-size: 12px;
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  width: fit-content;
+  border-radius: var(--radius-sm);
 }
 
-/* ============================================
-   BACKGROUND LAYER
-============================================ */
-
-.hero__background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: var(--z-base);
-}
-
-.hero__image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: scale(1.1);
-  will-change: transform;
-}
-
-/* Parallax effect on desktop only */
+/* Desktop styles */
 @media (min-width: 768px) {
-  .hero__image {
-    transform: scale(1.1);
-  }
-}
-
-.hero__overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    to top,
-    var(--hero-gradient-start),
-    var(--hero-gradient-end)
-  );
-}
-
-/* ============================================
-   CONTENT LAYER
-============================================ */
-
-.hero__content {
-  position: relative;
-  z-index: var(--z-base);
-  max-width: 100%;
-  padding: var(--hero-padding-mobile) var(--container-padding);
-  text-align: center;
-  color: var(--color-white);
-}
-
-@media (min-width: 768px) {
-  .hero__content {
-    max-width: var(--hero-content-max-width);
-    padding: var(--hero-padding-desktop) var(--container-padding);
-    text-align: left;
-  }
-}
-
-/* ============================================
-   ACCENT LINE
-============================================ */
-
-.hero__accent-line {
-  width: 0;
-  height: var(--hero-accent-line-height);
-  background-color: var(--color-white);
-  margin: 0 auto var(--hero-element-gap);
-  animation: accentLineGrow var(--hero-animation-duration) ease-out var(--hero-animation-stagger) forwards;
-}
-
-@media (min-width: 768px) {
-  .hero__accent-line {
-    margin: 0 0 var(--hero-element-gap);
+  /* Increase padding on desktop */
+  .hero {
+    padding-top: 160px;
+    padding-bottom: 192px;
   }
 
-  .hero__accent-line:hover {
-    width: 120px;
-    transition: width 300ms ease-in-out;
+  /* Larger headline on desktop */
+  .hero__headline {
+    font-size: 64px;
   }
-}
-
-@keyframes accentLineGrow {
-  to {
-    width: var(--hero-accent-line-width);
-  }
-}
-
-/* ============================================
-   SUBHEADLINE
-============================================ */
-
-.hero__subheadline {
-  font-size: var(--hero-subheadline-mobile);
-  font-weight: 400;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.7);
-  margin: 0 0 var(--hero-element-gap);
-  max-width: 100%;
-  opacity: 0;
-  animation: fadeInUp var(--hero-animation-duration) ease-out calc(var(--hero-animation-stagger) * 2) forwards;
-}
-
-@media (min-width: 768px) {
-  .hero__subheadline {
-    font-size: var(--hero-subheadline-desktop);
-    max-width: var(--hero-content-max-width);
-  }
-}
-
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ============================================
-   CTA BUTTON
-============================================ */
-
-.hero__cta {
-  display: inline-block;
-  font-size: var(--hero-cta-text);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  text-decoration: none;
-  color: var(--color-black);
-  background-color: var(--color-white);
-  padding: var(--hero-cta-padding-v) var(--hero-cta-padding-h);
-  border-radius: var(--hero-cta-radius);
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp var(--hero-animation-duration) ease-out calc(var(--hero-animation-stagger) * 3) forwards;
-}
-
-.hero__cta:focus {
-  outline: 2px solid var(--color-white);
-  outline-offset: 4px;
 }

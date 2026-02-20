@@ -1,8 +1,9 @@
 /**
  * Navigation Styles
- * BEM: Block = .navigation
+ * Styles for the main navigation bar
  */
 
+/* Main navigation container that sticks to the top */
 .navigation {
   position: sticky;
   top: 0;
@@ -11,6 +12,7 @@
   background-color: var(--color-white);
 }
 
+/* Inner container that holds all navigation items */
 .navigation__container {
   max-width: var(--container-max-width);
   margin: 0 auto;
@@ -28,7 +30,7 @@
   display: block;
 }
 
-/* Nav Links */
+/* Navigation Links - hidden on mobile, shown on tablet and up */
 .navigation__links {
   display: none;
   gap: 2rem;
