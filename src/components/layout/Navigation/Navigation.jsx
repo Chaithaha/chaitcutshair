@@ -18,6 +18,9 @@ const Navigation = () => {
         <a href="#services" className="navigation__link">Services</a>
       </li>
       <li className="navigation__item">
+        <a href="#barbers" className="navigation__link">Barbers</a>
+      </li>
+      <li className="navigation__item">
         <a href="#about" className="navigation__link">About</a>
       </li>
       <li className="navigation__item">
