@@ -21,7 +21,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-size: cover;
+  background-size: 65%;
   background-position: center;
   opacity: 0;
   animation: slideshowFade 9s infinite;
@@ -62,15 +62,19 @@
   0% {
     opacity: 0;
   }
+
   10% {
     opacity: 1;
   }
+
   40% {
     opacity: 1;
   }
+
   50% {
     opacity: 0;
   }
+
   100% {
     opacity: 0;
   }
