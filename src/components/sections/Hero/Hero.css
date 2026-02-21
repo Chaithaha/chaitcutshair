@@ -7,11 +7,12 @@
 .hero {
   position: relative;
   color: var(--color-white);
-  padding-top: 96px;
-  padding-bottom: 128px;
+  padding-top: 140px;
+  padding-bottom: 180px;
   padding-left: var(--container-padding);
   padding-right: var(--container-padding);
   text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Container that holds hero content */
@@ -52,7 +53,7 @@
   font-size: 18px;
   line-height: 1.6;
   margin-top: 0;
-  margin-bottom: 48px;
+  margin-bottom: 8px;
   margin-left: auto;
   margin-right: auto;
   opacity: 0.7;
@@ -62,6 +63,10 @@
 
 /* Call-to-action button */
 .hero__cta {
+  position: absolute;
+  top: 280px;
+  left: 50%;
+  transform: translateX(-50%);
   background-color: var(--color-white);
   color: var(--color-black);
   padding-top: 16px;
@@ -81,10 +86,11 @@
 
 /* Desktop styles */
 @media (min-width: 768px) {
+
   /* Increase padding on desktop */
   .hero {
-    padding-top: 160px;
-    padding-bottom: 192px;
+    padding-top: 220px;
+    padding-bottom: 260px;
   }
 
   /* Larger headline on desktop */
