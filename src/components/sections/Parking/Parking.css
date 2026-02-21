@@ -1,0 +1,64 @@
+/**
+ * Parking Styles
+ * Minimal design for parking information
+ */
+
+.parking {
+  background-color: var(--color-white);
+  color: var(--color-black);
+  padding: 80px var(--container-padding);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.parking__container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+}
+
+.parking__content {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.parking__title {
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: var(--letter-spacing-tight);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.parking__divider {
+  width: 60px;
+  height: 3px;
+  background-color: var(--color-black);
+  margin: 0 auto 32px;
+}
+
+.parking__info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.parking__text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-black);
+}
+
+.parking__text--secondary {
+  opacity: 0.6;
+}
+
+@media (min-width: 768px) {
+  .parking {
+    padding: 100px var(--container-padding);
+  }
+
+  .parking__title {
+    font-size: 48px;
+  }
+}
