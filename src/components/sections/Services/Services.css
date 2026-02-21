@@ -11,6 +11,8 @@
   padding-bottom: 80px;
   padding-left: var(--container-padding);
   padding-right: var(--container-padding);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 /* Container for services content */

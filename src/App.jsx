@@ -10,14 +10,20 @@
 
 import Navigation from './components/layout/Navigation/Navigation';
 import Hero from './components/sections/Hero/Hero';
+import About from './components/sections/About/About';
 import Services from './components/sections/Services/Services';
+import Parking from './components/sections/Parking/Parking';
+import Reviews from './components/sections/Reviews/Reviews';
 
 function App() {
   return (
     <>
       <Navigation />
       <Hero />
+      <About />
       <Services />
+      <Parking />
+      <Reviews />
     </>
   );
 }
