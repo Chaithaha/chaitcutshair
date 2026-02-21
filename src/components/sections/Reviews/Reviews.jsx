@@ -2,15 +2,31 @@
  * Reviews Component
  *
  * Google Reviews section:
- * - Empty placeholder for future reviews
+ * - Elfsight Google Reviews widget
  * - Google branding styling
  *
  * @returns {JSX.Element} The reviews section
  */
 
+import { useEffect } from 'react';
 import './Reviews.css';
 
 const Reviews = () => {
+  useEffect(() => {
+    // Load Elfsight platform script
+    const script = document.createElement('script');
+    script.src = 'https://elfsightcdn.com/platform.js';
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      // Cleanup script on unmount
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
+    };
+  }, []);
+
   return (
     <section className="reviews" id="reviews">
       <div className="reviews__container">
@@ -27,11 +43,7 @@ const Reviews = () => {
           <h2 className="reviews__title">What Our Clients Say</h2>
         </div>
 
-        <div className="reviews__empty">
-          <div className="reviews__empty-icon">★</div>
-          <p className="reviews__empty-text">Reviews coming soon</p>
-          <p className="reviews__empty-subtext">Be the first to share your experience</p>
-        </div>
+        <div className="elfsight-app-05f2b6af-0fe1-427f-bf35-055ea865ee46" data-elfsight-app-lazy></div>
       </div>
     </section>
   );
