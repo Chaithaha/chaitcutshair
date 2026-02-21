@@ -79,9 +79,6 @@ const About = () => {
     <section className="about" id="about">
       <div className="about__grain"></div>
       <div className="about__container">
-        {/* Massive decorative number */}
-        <div className="about__bg-number">01</div>
-
         <div className="about__grid">
           {/* Left column - Image */}
           <div className="about__image-col">

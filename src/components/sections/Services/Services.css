@@ -5,14 +5,14 @@
 
 /* Main services section */
 .services {
-  background-color: var(--color-white);
-  color: var(--color-black);
+  background-color: #000000;
+  color: #ffffff;
   padding-top: 80px;
   padding-bottom: 80px;
   padding-left: var(--container-padding);
   padding-right: var(--container-padding);
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* Container for services content */
@@ -44,13 +44,13 @@
 
 /* Individual service card */
 .services__card {
-  border: 1px solid var(--color-black);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 32px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 320px;
-  transition: background-color var(--transition-slow), color var(--transition-slow);
+  transition: background-color var(--transition-slow), color var(--transition-slow), border-color var(--transition-slow);
 }
 
 /* Top part of card with number, title, description */
@@ -89,7 +89,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 24px;
   transition: border-color var(--transition-slow);
 }
@@ -106,22 +106,23 @@
   text-transform: uppercase;
   font-size: 10px;
   letter-spacing: 0.2em;
-  border-bottom: 1px solid var(--color-black);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
   transition: border-color var(--transition-slow);
 }
 
 /* Card hover effect */
 .services__card:hover {
-  background-color: var(--color-black);
-  color: var(--color-white);
+  background-color: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
 }
 
 .services__card:hover .services__card-footer {
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(0, 0, 0, 0.1);
 }
 
 .services__card:hover .services__card-link {
-  border-color: var(--color-white);
+  border-color: #000000;
 }
 
 /* Desktop styles */
