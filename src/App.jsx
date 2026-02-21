@@ -10,12 +10,14 @@
 
 import Navigation from './components/layout/Navigation/Navigation';
 import Hero from './components/sections/Hero/Hero';
+import Services from './components/sections/Services/Services';
 
 function App() {
   return (
     <>
       <Navigation />
       <Hero />
+      <Services />
     </>
   );
 }

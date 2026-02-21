@@ -1,0 +1,136 @@
+/**
+ * Services Styles
+ * Styles for the services section
+ */
+
+/* Main services section */
+.services {
+  background-color: var(--color-white);
+  color: var(--color-black);
+  padding-top: 80px;
+  padding-bottom: 80px;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+}
+
+/* Container for services content */
+.services__container {
+  max-width: var(--container-max-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Section header with title */
+.services__header {
+  margin-bottom: 48px;
+}
+
+/* Section title */
+.services__title {
+  font-size: 36px;
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: var(--letter-spacing-tight);
+  text-transform: uppercase;
+}
+
+/* Grid layout for service cards */
+.services__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+/* Individual service card */
+.services__card {
+  border: 1px solid var(--color-black);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 320px;
+  transition: background-color var(--transition-slow), color var(--transition-slow);
+}
+
+/* Top part of card with number, title, description */
+.services__card-content {
+  flex: 1;
+}
+
+/* Service number */
+.services__number {
+  font-size: 12px;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-widest);
+  text-transform: uppercase;
+  opacity: 0.4;
+  margin-bottom: 24px;
+  display: block;
+}
+
+/* Card title */
+.services__card-title {
+  font-size: 24px;
+  font-weight: var(--font-weight-bold);
+  margin-bottom: 16px;
+}
+
+/* Card description */
+.services__card-description {
+  font-size: 13px;
+  opacity: 0.6;
+  line-height: 1.6;
+  font-weight: var(--font-weight-normal);
+}
+
+/* Bottom part of card with price and link */
+.services__card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding-top: 24px;
+  transition: border-color var(--transition-slow);
+}
+
+/* Service price */
+.services__price {
+  font-size: 28px;
+  font-weight: var(--font-weight-normal);
+}
+
+/* Book now link in card */
+.services__card-link {
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  border-bottom: 1px solid var(--color-black);
+  transition: border-color var(--transition-slow);
+}
+
+/* Card hover effect */
+.services__card:hover {
+  background-color: var(--color-black);
+  color: var(--color-white);
+}
+
+.services__card:hover .services__card-footer {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.services__card:hover .services__card-link {
+  border-color: var(--color-white);
+}
+
+/* Desktop styles */
+@media (min-width: 768px) {
+  /* Three column grid on desktop */
+  .services__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Slightly larger title on desktop */
+  .services__title {
+    font-size: 48px;
+  }
+}
