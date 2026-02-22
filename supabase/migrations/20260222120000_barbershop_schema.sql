@@ -1,14 +1,11 @@
 -- Barbershop Booking System Schema
 -- Created: 2026-02-22
 
--- Enable UUID extension (if not already enabled)
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
 -- ============================================
 -- BARBERS TABLE
 -- ============================================
 CREATE TABLE public.barbers (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
     bio TEXT,
@@ -25,7 +22,7 @@ CREATE INDEX idx_barbers_is_active ON public.barbers(is_active);
 -- SERVICES TABLE
 -- ============================================
 CREATE TABLE public.services (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL,
     price DECIMAL(10,2) NOT NULL,
     duration INTEGER NOT NULL, -- in minutes
@@ -39,7 +36,7 @@ CREATE INDEX idx_services_is_active ON public.services(is_active);
 -- SCHEDULES TABLE
 -- ============================================
 CREATE TABLE public.schedules (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     barber_id UUID NOT NULL REFERENCES public.barbers(id) ON DELETE CASCADE,
     date DATE NOT NULL,
     start_time TIME NOT NULL,
@@ -59,7 +56,7 @@ CREATE INDEX idx_schedules_barber_date ON public.schedules(barber_id, date);
 -- APPOINTMENTS TABLE
 -- ============================================
 CREATE TABLE public.appointments (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     barber_id UUID NOT NULL REFERENCES public.barbers(id) ON DELETE CASCADE,
     service_id UUID NOT NULL REFERENCES public.services(id) ON DELETE RESTRICT,
     customer_name TEXT NOT NULL,
