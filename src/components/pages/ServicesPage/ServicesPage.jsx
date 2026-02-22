@@ -11,55 +11,18 @@
  */
 
 import { useState, useEffect, useRef } from 'react';
+import { getServices } from '../../../lib/supabaseClient';
 import './ServicesPage.css';
 
-const DUMMY_SERVICES = [
-  {
-    id: '1',
-    number: '01',
-    name: 'Precision Haircut',
-    description: 'Expert fades, classic tapers, and contemporary scissor work. Every cut is tailored to your face shape, lifestyle, and personal aesthetic.',
-    duration: '45 min',
-    price: 35,
-  },
-  {
-    id: '2',
-    number: '02',
-    name: 'Beard Sculpting',
-    description: 'Full beard grooming including shaping, lining, hot towel treatment, and premium beard oil application for a polished finish.',
-    duration: '30 min',
-    price: 15,
-  },
-  {
-    id: '3',
-    number: '03',
-    name: 'The Full Package',
-    description: 'Our signature combination: precision haircut plus beard sculpting with enhanced hot towel service and scalp massage.',
-    duration: '75 min',
-    price: 45,
-  },
-  {
-    id: '4',
-    number: '04',
-    name: 'Junior Cut',
-    description: 'Gentle, patient service for young gentlemen under 12. A positive first barbershop experience that builds confidence.',
-    duration: '30 min',
-    price: 25,
-  },
-  {
-    id: '5',
-    number: '05',
-    name: 'Custom Design',
-    description: 'Express yourself with precision hair artistry. From subtle patterns to bold statements, our specialists bring your vision to life.',
-    duration: '60 min',
-    price: 20,
-  },
-];
-
-const ServiceCard = ({ service, index }) => {
+const ServiceCard = ({ service, index, onBook }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const cardRef = useRef(null);
+
+  const serviceNumber = String(index + 1).padStart(2, '0');
+  const durationDisplay = service.duration >= 60
+    ? `${Math.floor(service.duration / 60)}h ${service.duration % 60}m`
+    : `${service.duration} min`;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -89,7 +52,7 @@ const ServiceCard = ({ service, index }) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Background Number */}
-      <span className="services-page__card-bg-number">{service.number}</span>
+      <span className="services-page__card-bg-number">{serviceNumber}</span>
 
       {/* Diagonal Accent */}
       <div className="services-page__card-accent"></div>
@@ -97,25 +60,25 @@ const ServiceCard = ({ service, index }) => {
       {/* Content */}
       <div className="services-page__card-inner">
         <header className="services-page__card-header">
-          <span className="services-page__card-number">{service.number}</span>
+          <span className="services-page__card-number">{serviceNumber}</span>
           <div className="services-page__card-duration">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="12" cy="12" r="10" />
               <path d="M12 6v6l4 2" />
             </svg>
-            <span>{service.duration}</span>
+            <span>{durationDisplay}</span>
           </div>
         </header>
 
         <h3 className="services-page__card-title">{service.name}</h3>
-        <p className="services-page__card-description">{service.description}</p>
+        <p className="services-page__card-description">{service.description || 'Professional grooming service tailored to your style.'}</p>
 
         <footer className="services-page__card-footer">
           <div className="services-page__card-price">
             <span className="services-page__card-price-currency">$</span>
             <span className="services-page__card-price-value">{service.price}</span>
           </div>
-          <button className="services-page__card-cta">
+          <button className="services-page__card-cta" onClick={() => onBook?.(service)}>
             <span>Book Now</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M5 12h14M12 5l7 7-7 7" />
@@ -130,9 +93,28 @@ const ServiceCard = ({ service, index }) => {
   );
 };
 
-const ServicesPage = () => {
+const ServicesPage = ({ onBookService }) => {
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [headerVisible, setHeaderVisible] = useState(false);
   const headerRef = useRef(null);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const data = await getServices();
+        setServices(data);
+      } catch (err) {
+        setError('Failed to load services');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -186,9 +168,15 @@ const ServicesPage = () => {
 
         {/* Services Grid */}
         <div className="services-page__grid">
-          {DUMMY_SERVICES.map((service, index) => (
-            <ServiceCard key={service.id} service={service} index={index} />
-          ))}
+          {loading ? (
+            <p className="services-page__loading">Loading services...</p>
+          ) : error ? (
+            <p className="services-page__error">{error}</p>
+          ) : (
+            services.map((service, index) => (
+              <ServiceCard key={service.id} service={service} index={index} onBook={onBookService} />
+            ))
+          )}
         </div>
 
         {/* Bottom CTA */}
