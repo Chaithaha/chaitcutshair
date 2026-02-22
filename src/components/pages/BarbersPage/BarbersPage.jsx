@@ -11,39 +11,15 @@
  */
 
 import { useState, useEffect, useRef } from 'react';
+import { getBarbers } from '../../../lib/supabaseClient';
 import './BarbersPage.css';
 
-const DUMMY_BARBERS = [
-  {
-    id: '1',
-    name: 'Marcus Johnson',
-    specialty: 'Fades & Beard Specialist',
-    bio: '10+ years crafting perfect fades. Marcus believes every client deserves a cut that turns heads.',
-    experience: '10 years',
-    image: null,
-  },
-  {
-    id: '2',
-    name: 'David Chen',
-    specialty: 'Classic Cuts & Styling',
-    bio: 'Trained in traditional barbering techniques with a modern edge. David specializes in timeless looks.',
-    experience: '7 years',
-    image: null,
-  },
-  {
-    id: '3',
-    name: 'Trey Williams',
-    specialty: 'Designs & Creative Cuts',
-    bio: 'The creative force behind our most intricate designs. Trey transforms hair into art.',
-    experience: '5 years',
-    image: null,
-  },
-];
-
-const BarberCard = ({ barber, index }) => {
+const BarberCard = ({ barber, index, onBook }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef(null);
+
+  const barberName = `${barber.first_name} ${barber.last_name}`;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -74,8 +50,8 @@ const BarberCard = ({ barber, index }) => {
     >
       {/* Image/Placeholder */}
       <div className="barbers-page__card-image">
-        {barber.image ? (
-          <img src={barber.image} alt={barber.name} />
+        {barber.profile_img ? (
+          <img src={barber.profile_img} alt={barberName} />
         ) : (
           <div className="barbers-page__card-placeholder">
             <div className="barbers-page__card-placeholder-inner">
@@ -89,20 +65,20 @@ const BarberCard = ({ barber, index }) => {
         )}
         {/* Overlay on hover */}
         <div className="barbers-page__card-overlay">
-          <span className="barbers-page__card-experience">{barber.experience} experience</span>
+          <span className="barbers-page__card-experience">{barber.specialty}</span>
         </div>
       </div>
 
       {/* Content */}
       <div className="barbers-page__card-content">
         <div className="barbers-page__card-header">
-          <h3 className="barbers-page__card-name">{barber.name}</h3>
+          <h3 className="barbers-page__card-name">{barberName}</h3>
           <div className="barbers-page__card-line"></div>
         </div>
         <p className="barbers-page__card-specialty">{barber.specialty}</p>
         <p className="barbers-page__card-bio">{barber.bio}</p>
-        <button className="barbers-page__card-cta">
-          <span>Book with {barber.name.split(' ')[0]}</span>
+        <button className="barbers-page__card-cta" onClick={() => onBook?.(barber)}>
+          <span>Book with {barber.first_name}</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
@@ -115,9 +91,28 @@ const BarberCard = ({ barber, index }) => {
   );
 };
 
-const BarbersPage = () => {
+const BarbersPage = ({ onBookBarber }) => {
+  const [barbers, setBarbers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [headerVisible, setHeaderVisible] = useState(false);
   const headerRef = useRef(null);
+
+  useEffect(() => {
+    const fetchBarbers = async () => {
+      try {
+        const data = await getBarbers();
+        setBarbers(data);
+      } catch (err) {
+        setError('Failed to load barbers');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBarbers();
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -166,9 +161,15 @@ const BarbersPage = () => {
 
         {/* Barbers Grid */}
         <div className="barbers-page__grid">
-          {DUMMY_BARBERS.map((barber, index) => (
-            <BarberCard key={barber.id} barber={barber} index={index} />
-          ))}
+          {loading ? (
+            <p className="barbers-page__loading">Loading barbers...</p>
+          ) : error ? (
+            <p className="barbers-page__error">{error}</p>
+          ) : (
+            barbers.map((barber, index) => (
+              <BarberCard key={barber.id} barber={barber} index={index} onBook={onBookBarber} />
+            ))
+          )}
         </div>
 
         {/* Join Team CTA */}
