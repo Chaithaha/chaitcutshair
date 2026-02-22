@@ -1,0 +1,49 @@
+/**
+ * BookingButton Styles
+ * Floating action button for booking
+ */
+
+.booking-button {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  background-color: var(--color-black, #000);
+  color: var(--color-white, #fff);
+  border: none;
+  border-radius: 3rem;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.booking-button svg {
+  flex-shrink: 0;
+}
+
+.booking-button__text {
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-bold, 700);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-widest, 0.1em);
+}
+
+@media (max-width: 30rem) {
+  .booking-button {
+    bottom: 1rem;
+    right: 1rem;
+    padding: 0.875rem 1.25rem;
+  }
+
+  .booking-button__text {
+    display: none;
+  }
+
+  .booking-button {
+    padding: 1rem;
+    border-radius: 50%;
+  }
+}
