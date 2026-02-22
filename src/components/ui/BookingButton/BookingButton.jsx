@@ -4,21 +4,23 @@
  * A floating action button at the bottom right of the screen
  * that opens the booking modal when clicked.
  *
+ * @param {Object} props
+ * @param {boolean} props.isOpen - Whether the modal is open
+ * @param {Function} props.onOpen - Callback to open the modal
+ * @param {Function} props.onClose - Callback to close the modal
+ * @param {Object} props.preselectedBarber - Optional preselected barber
  * @returns {JSX.Element} The floating booking button
  */
 
-import { useState } from 'react';
 import BookingModal from '../BookingModal/BookingModal';
 import './BookingButton.css';
 
-const BookingButton = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+const BookingButton = ({ isOpen, onOpen, onClose, preselectedBarber }) => {
   return (
     <>
       <button
         className="booking-button"
-        onClick={() => setIsModalOpen(true)}
+        onClick={onOpen}
         aria-label="Open booking modal"
       >
         <svg
@@ -38,8 +40,9 @@ const BookingButton = () => {
       </button>
 
       <BookingModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isOpen}
+        onClose={onClose}
+        preselectedBarber={preselectedBarber}
       />
     </>
   );
