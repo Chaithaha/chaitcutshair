@@ -33,3 +33,5 @@ dist-ssr
 
 # Build output
 build
+
+.claude
