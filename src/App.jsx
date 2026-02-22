@@ -9,6 +9,7 @@
  * @returns {JSX.Element} The main app structure
  */
 
+import { useState } from 'react';
 import Navigation from './components/layout/Navigation/Navigation';
 import Hero from './components/sections/Hero/Hero';
 import About from './components/sections/About/About';
@@ -19,16 +20,38 @@ import Reviews from './components/sections/Reviews/Reviews';
 import BookingButton from './components/ui/BookingButton/BookingButton';
 
 function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [preselectedBarber, setPreselectedBarber] = useState(null);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setPreselectedBarber(null);
+  };
+
+  const handleBookBarber = (barber) => {
+    setPreselectedBarber(barber);
+    setIsModalOpen(true);
+  };
+
   return (
     <>
       <Navigation />
       <Hero />
       <About />
       <ServicesPage />
-      <BarbersPage />
+      <BarbersPage onBookBarber={handleBookBarber} />
       <Parking />
       <Reviews />
-      <BookingButton />
+      <BookingButton
+        isOpen={isModalOpen}
+        onOpen={handleOpenModal}
+        onClose={handleCloseModal}
+        preselectedBarber={preselectedBarber}
+      />
     </>
   );
 }
