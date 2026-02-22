@@ -4,7 +4,6 @@
  * The main navigation bar that stays at the top of the page:
  * - Logo on the left side
  * - Navigation links in the center (hidden on mobile)
- * - "Book Now" button on the right
  * - Sticks to the top when you scroll
  *
  * @returns {JSX.Element} The navigation bar
@@ -22,7 +21,10 @@ const Navigation = () => {
   const links = (
     <ul className="navigation__links">
       <li className="navigation__item">
-        <a href="#services" className="navigation__link">Services</a>
+        <a href="#" className="navigation__link">Home</a>
+      </li>
+      <li className="navigation__item">
+        <a href="#services-page" className="navigation__link">Services</a>
       </li>
       <li className="navigation__item">
         <a href="#barbers" className="navigation__link">Barbers</a>
@@ -30,15 +32,7 @@ const Navigation = () => {
       <li className="navigation__item">
         <a href="#about" className="navigation__link">About</a>
       </li>
-      <li className="navigation__item">
-        <a href="#contact" className="navigation__link">Contact</a>
-      </li>
     </ul>
-  );
-
-  // Call-to-action button to book an appointment
-  const ctaButton = (
-    <a href="#" className="navigation__cta">Book Now</a>
   );
 
   return (
@@ -46,7 +40,6 @@ const Navigation = () => {
       <div className="navigation__container">
         {logo}
         {links}
-        {ctaButton}
       </div>
     </nav>
   );
