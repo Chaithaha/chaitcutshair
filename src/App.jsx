@@ -40,7 +40,7 @@ function App() {
   return (
     <>
       <Navigation />
-      <Hero />
+      <Hero onOpenModal={handleOpenModal} />
       <About />
       <ServicesPage />
       <BarbersPage onBookBarber={handleBookBarber} />
