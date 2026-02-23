@@ -178,14 +178,6 @@ const ServicesPage = ({ onBookService }) => {
             ))
           )}
         </div>
-
-        {/* Bottom CTA */}
-        <div className="services-page__footer">
-          <div className="services-page__footer-line"></div>
-          <p className="services-page__footer-text">
-            Not sure what you need? <a href="#contact">Contact us</a> for a free consultation.
-          </p>
-        </div>
       </div>
     </section>
   );
