@@ -7,13 +7,15 @@
  * - Subheadline text below
  * - CTA button to book appointments
  *
+ * @param {Object} props
+ * @param {Function} props.onOpenModal - Callback to open the booking modal
  * @returns {JSX.Element} The hero section
  */
 
 import './Hero.css';
 import BackgroundSlideshow from '../../ui/BackgroundSlideshow/BackgroundSlideshow';
 
-const Hero = () => {
+const Hero = ({ onOpenModal }) => {
   /* Add or remove image paths here to customize the slideshow */
   const heroImages = [
     'test1.jpeg',
@@ -32,7 +34,7 @@ const Hero = () => {
           Premium grooming services tailored for the modern gentleman.
           Book your next appointment in seconds.
         </p>
-        <a href="#" className="hero__cta">Schedule Appointment</a>
+        <button className="hero__cta" onClick={onOpenModal}>Schedule Appointment</button>
       </div>
     </section>
   );

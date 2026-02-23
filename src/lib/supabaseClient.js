@@ -114,6 +114,7 @@ export const createAppointment = async (appointmentData) => {
       service_id: serviceId,
       customer_name: name,
       customer_email: email,
+      customer_phone: phone || null,
       appt_time: apptTime.toISOString(),
       end_time: endTime.toISOString(),
       status: 'confirmed',
