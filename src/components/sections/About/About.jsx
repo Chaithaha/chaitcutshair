@@ -79,6 +79,7 @@ const About = () => {
     <section className="about" id="about">
       <div className="about__grain"></div>
       <div className="about__container">
+        <h2 className="about__heading">About Us</h2>
         <div className="about__grid">
           {/* Left column - Image */}
           <div className="about__image-col">
