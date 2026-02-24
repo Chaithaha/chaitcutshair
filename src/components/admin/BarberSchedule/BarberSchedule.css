@@ -1,0 +1,199 @@
+.barber-schedule__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.barber-schedule {
+  background: white;
+  border: 2px solid #000;
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.barber-schedule__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.barber-schedule__title {
+  font-size: 16px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+
+.barber-schedule__close {
+  font-size: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.barber-schedule__calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+}
+
+.barber-schedule__calendar-header button {
+  background: none;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  padding: 4px 12px;
+  cursor: pointer;
+}
+
+.barber-schedule__month {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+
+.barber-schedule__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  padding: 0 24px 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.barber-schedule__weekday {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.barber-schedule__days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  padding: 16px 24px;
+}
+
+.barber-schedule__day {
+  aspect-ratio: 1;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.barber-schedule__day:hover:not(:disabled) {
+  border-color: #000;
+}
+
+.barber-schedule__day--empty {
+  background: transparent;
+  border: none;
+  cursor: default;
+}
+
+.barber-schedule__day--sunday {
+  background: #f5f5f5;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.barber-schedule__day--unavailable {
+  background: #e5e5e5;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.barber-schedule__edit {
+  padding: 20px 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.barber-schedule__edit h3 {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 16px;
+}
+
+.barber-schedule__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.barber-schedule__field label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.barber-schedule__field select,
+.barber-schedule__field input {
+  padding: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+}
+
+.barber-schedule__actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.barber-schedule__cancel,
+.barber-schedule__save {
+  flex: 1;
+  padding: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.barber-schedule__cancel {
+  background: transparent;
+  border: 1px solid #000;
+  color: #000;
+}
+
+.barber-schedule__save {
+  background: #000;
+  border: 1px solid #000;
+  color: white;
+}
+
+.barber-schedule__footer {
+  padding: 16px 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.barber-schedule__back {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.barber-schedule__back:hover {
+  color: #000;
+}

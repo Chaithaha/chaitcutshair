@@ -52,7 +52,6 @@ const AdminLayout = ({ children }) => {
           <ul className="admin__nav-links">
             <li><a href="#admin-appointments">Appointments</a></li>
             <li><a href="#admin-barbers">Barbers</a></li>
-            <li><a href="#admin-services">Services</a></li>
           </ul>
           <button className="admin__nav-logout" onClick={handleLogout}>Logout</button>
         </div>

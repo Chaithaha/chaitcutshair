@@ -1,0 +1,98 @@
+.admin-appointments__filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.admin-appointments__filters select,
+.admin-appointments__filters input {
+  padding: 10px 14px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  font-family: 'Manrope', sans-serif;
+  font-size: 13px;
+}
+
+.admin-appointments__clear {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.admin-appointments__clear:hover {
+  border-color: #000;
+}
+
+.admin-appointments__empty {
+  padding: 40px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.admin-appointments__table {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.admin-appointments__row {
+  display: grid;
+  grid-template-columns: 1fr 80px 1.5fr 1.2fr 1.5fr 100px 80px;
+  gap: 16px;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  font-size: 13px;
+}
+
+.admin-appointments__row--header {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: rgba(0, 0, 0, 0.5);
+  background: #f5f5f5;
+}
+
+.admin-appointments__row:not(.admin-appointments__row--header):hover {
+  background: #fafafa;
+  cursor: pointer;
+}
+
+.admin-appointments__status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: white;
+}
+
+.admin-appointments__edit {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.admin-appointments__edit:hover {
+  border-color: #000;
+}
+
+@media (max-width: 1024px) {
+  .admin-appointments__table {
+    overflow-x: auto;
+  }
+
+  .admin-appointments__row {
+    min-width: 800px;
+  }
+}
