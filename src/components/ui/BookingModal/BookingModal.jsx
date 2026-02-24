@@ -32,7 +32,8 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber }) => {
     serviceId: '',
     date: '',
     time: '',
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     phone: '',
   });
@@ -77,7 +78,8 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber }) => {
         serviceId: '',
         date: '',
         time: '',
-        name: '',
+        firstName: '',
+        lastName: '',
         email: '',
         phone: '',
       });
@@ -124,7 +126,7 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.serviceId || !formData.date || !formData.time || !formData.name || !formData.email) {
+    if (!formData.serviceId || !formData.date || !formData.time || !formData.firstName || !formData.lastName || !formData.email) {
       setError('Please fill in all required fields');
       return;
     }
@@ -138,7 +140,8 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber }) => {
         serviceId: formData.serviceId,
         date: formData.date,
         time: formData.time,
-        name: formData.name,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
         email: formData.email,
         phone: formData.phone,
       });
@@ -350,12 +353,23 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber }) => {
 
               {/* Contact Info */}
               <div className="booking-modal__field">
-                <label>Your Name</label>
+                <label>First Name</label>
                 <input
                   type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="John Doe"
+                  value={formData.firstName}
+                  onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                  placeholder="John"
+                  required
+                />
+              </div>
+
+              <div className="booking-modal__field">
+                <label>Last Name</label>
+                <input
+                  type="text"
+                  value={formData.lastName}
+                  onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                  placeholder="Doe"
                   required
                 />
               </div>

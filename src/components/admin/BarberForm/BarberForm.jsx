@@ -6,6 +6,7 @@ const BarberForm = ({ barber, onClose, onSave }) => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
+    email: '',
     bio: '',
     specialty: '',
     profileImg: '',
@@ -18,6 +19,7 @@ const BarberForm = ({ barber, onClose, onSave }) => {
       setFormData({
         firstName: barber.first_name || '',
         lastName: barber.last_name || '',
+        email: barber.email || '',
         bio: barber.bio || '',
         specialty: barber.specialty || '',
         profileImg: barber.profile_img || '',
@@ -34,6 +36,7 @@ const BarberForm = ({ barber, onClose, onSave }) => {
       const data = {
         first_name: formData.firstName,
         last_name: formData.lastName,
+        email: formData.email,
         bio: formData.bio,
         specialty: formData.specialty,
         profile_img: formData.profileImg,
@@ -72,6 +75,17 @@ const BarberForm = ({ barber, onClose, onSave }) => {
           <div className="barber-form__field">
             <label>Last Name</label>
             <input type="text" value={formData.lastName} onChange={handleChange('lastName')} required />
+          </div>
+
+          <div className="barber-form__field">
+            <label>Email</label>
+            <input
+              type="email"
+              value={formData.email}
+              onChange={handleChange('email')}
+              placeholder="chaitknight81@gmail.com"
+              required
+            />
           </div>
 
           <div className="barber-form__field">

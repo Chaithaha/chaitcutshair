@@ -91,7 +91,7 @@ export const getAvailableSlots = async (barberId, date) => {
 
 // Create a new appointment
 export const createAppointment = async (appointmentData) => {
-  const { barberId, serviceId, date, time, name, email, phone } = appointmentData;
+  const { barberId, serviceId, date, time, firstName, lastName, email, phone } = appointmentData;
 
   // Get service duration
   const { data: service, error: serviceError } = await supabase
@@ -112,17 +112,36 @@ export const createAppointment = async (appointmentData) => {
     .insert({
       barber_id: barberId,
       service_id: serviceId,
-      customer_name: name,
+      customer_first_name: firstName,
+      customer_last_name: lastName,
       customer_email: email,
       customer_phone: phone || null,
       appt_time: apptTime.toISOString(),
       end_time: endTime.toISOString(),
       status: 'confirmed',
     })
-    .select()
+    .select(`
+      *,
+      barber:barbers(id, first_name, last_name, email),
+      service:services(id, name, price)
+    `)
     .single();
 
   if (error) throw error;
+
+  // Send confirmation emails
+  try {
+    await supabase.functions.invoke('send-booking-email', {
+      body: {
+        type: 'new_booking',
+        appointment: data,
+        barberEmail: data.barber.email,
+      },
+    });
+  } catch (emailError) {
+    console.error('Failed to send email:', emailError);
+  }
+
   return data;
 };
 
@@ -158,6 +177,7 @@ export const createBarber = async (barberData) => {
     .insert({
       first_name: barberData.firstName,
       last_name: barberData.lastName,
+      email: barberData.email,
       bio: barberData.bio || null,
       specialty: barberData.specialty || null,
       profile_img: barberData.profileImg || null,
@@ -207,7 +227,7 @@ export const getAllAppointments = async (filters = {}) => {
     .from('appointments')
     .select(`
       *,
-      barber:barbers(id, first_name, last_name),
+      barber:barbers(id, first_name, last_name, email),
       service:services(id, name, price)
     `)
     .order('appt_time', { ascending: false });
@@ -243,12 +263,39 @@ export const updateAppointment = async (id, updates) => {
 };
 
 export const deleteAppointment = async (id) => {
+  // First fetch appointment details for email
+  const { data: appointment } = await supabase
+    .from('appointments')
+    .select(`
+      *,
+      barber:barbers(id, first_name, last_name, email),
+      service:services(id, name)
+    `)
+    .eq('id', '')
+    .single();
+
+  // Delete the appointment
   const { error } = await supabase
     .from('appointments')
     .delete()
     .eq('id', id);
 
   if (error) throw error;
+
+  // Send cancellation email to barber
+  if (appointment?.barber?.email) {
+    try {
+      await supabase.functions.invoke('send-booking-email', {
+        body: {
+          type: 'cancelled',
+          appointment: appointment,
+          barberEmail: appointment.barber.email,
+        },
+      });
+    } catch (emailError) {
+      console.error('Failed to send cancellation email:', emailError);
+    }
+  }
 };
 
 export default supabase;

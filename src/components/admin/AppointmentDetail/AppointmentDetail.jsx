@@ -75,7 +75,7 @@ const AppointmentDetail = ({ appointment, onClose, onSave }) => {
           <div className="appointment-detail__info">
             <div className="appointment-detail__info-item">
               <label>Customer</label>
-              <span>{appointment.customer_name}</span>
+              <span>{appointment.customer_first_name} {appointment.customer_last_name}</span>
             </div>
             <div className="appointment-detail__info-item">
               <label>Email</label>
