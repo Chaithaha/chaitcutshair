@@ -1,0 +1,29 @@
+/* src/components/admin/AdminDashboard/AdminDashboard.css */
+.admin-dashboard {
+  /* Styles handled by individual sections */
+}
+
+.admin__section {
+  padding: 60px var(--container-padding);
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.admin__section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.admin__section-title {
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: var(--font-weight-extrabold);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.admin__empty-text {
+  font-size: 16px;
+  color: var(--admin-muted);
+}
