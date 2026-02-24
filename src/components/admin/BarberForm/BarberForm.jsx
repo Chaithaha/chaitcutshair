@@ -83,7 +83,7 @@ const BarberForm = ({ barber, onClose, onSave }) => {
               type="email"
               value={formData.email}
               onChange={handleChange('email')}
-              placeholder="chaitknight81@gmail.com"
+              placeholder="chaitcutshair@omgchait.com"
               required
             />
           </div>
