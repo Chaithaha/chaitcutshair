@@ -1,0 +1,114 @@
+/* src/components/admin/AdminLayout/AdminLayout.css */
+.admin {
+  --admin-bg: #ffffff;
+  --admin-text: #000000;
+  --admin-accent: #000000;
+  --admin-muted: rgba(0, 0, 0, 0.5);
+  --admin-border: rgba(0, 0, 0, 0.15);
+
+  background-color: var(--admin-bg);
+  color: var(--admin-text);
+  min-height: 100vh;
+}
+
+.admin__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-size: 16px;
+  color: var(--admin-muted);
+}
+
+/* ========== ADMIN NAVIGATION ========== */
+.admin__nav {
+  border-bottom: 2px solid var(--admin-accent);
+  position: sticky;
+  top: 0;
+  background: var(--admin-bg);
+  z-index: var(--z-sticky);
+}
+
+.admin__nav-container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 20px var(--container-padding);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.admin__nav-title {
+  font-size: 14px;
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.admin__nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.admin__nav-links a {
+  font-size: 11px;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--admin-muted);
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-radius: 100px;
+  transition: all var(--transition-base);
+}
+
+.admin__nav-links a:hover {
+  color: var(--admin-accent);
+  border-color: var(--admin-border);
+}
+
+.admin__nav-links:active {
+  color: white;
+  background: var(--admin-accent);
+  border-color: var(--admin-accent);
+}
+
+.admin__nav-logout {
+  font-size: 10px;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--admin-accent);
+  background: transparent;
+  border: 1px solid var(--admin-border);
+  padding: 8px 16px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.admin__nav-logout:hover {
+  background: var(--admin-accent);
+  color: white;
+  border-color: var(--admin-accent);
+}
+
+@media (max-width: 768px) {
+  .admin__nav-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .admin__nav-links {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}

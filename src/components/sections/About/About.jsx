@@ -111,7 +111,7 @@ const About = () => {
             <div className="about__description-wrapper">
               <div className="about__accent-line"></div>
               <p className="about__description">
-                We believe that a great haircut is more than just a service—it's an experience. Our shop combines the heritage of traditional barbering with the convenience of modern technology.
+                We believe that a great haircut is more than just a service. It's an experience. Our shop combines the heritage of traditional barbering with the convenience of modern technology.
               </p>
               <p className="about__description about__description--secondary">
                 Every barber at ChaitCutsHair is hand-selected for their skill, professionalism, and dedication to the craft. We use only premium products to ensure you leave looking and feeling your best.
