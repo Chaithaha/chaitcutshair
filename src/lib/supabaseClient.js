@@ -126,4 +126,120 @@ export const createAppointment = async (appointmentData) => {
   return data;
 };
 
+// ============================================
+// ADMIN CRUD FUNCTIONS
+// ============================================
+
+// Barbers CRUD
+export const updateBarber = async (id, updates) => {
+  const { data, error } = await supabase
+    .from('barbers')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+};
+
+export const deleteBarber = async (id) => {
+  const { error } = await supabase
+    .from('barbers')
+    .delete()
+    .eq('id', id);
+
+  if (error) throw error;
+};
+
+export const createBarber = async (barberData) => {
+  const { data, error } = await supabase
+    .from('barbers')
+    .insert({
+      first_name: barberData.firstName,
+      last_name: barberData.lastName,
+      bio: barberData.bio || null,
+      specialty: barberData.specialty || null,
+      profile_img: barberData.profileImg || null,
+      is_active: true,
+    })
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+};
+
+// Schedules CRUD
+export const updateSchedule = async (barberId, date, updates) => {
+  const { data, error } = await supabase
+    .from('schedules')
+    .upsert({
+      barber_id: barberId,
+      date,
+      ...updates,
+    }, {
+      onConflict: 'barber_id,date'
+    })
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+};
+
+export const getBarberSchedules = async (barberId, startDate, endDate) => {
+  const { data, error } = await supabase
+    .from('schedules')
+    .select('*')
+    .eq('barber_id', barberId)
+    .gte('date', startDate)
+    .lte('date', endDate)
+    .order('date');
+
+  if (error) throw error;
+  return data;
+};
+
+// Appointments CRUD
+export const getAllAppointments = async (filters = {}) => {
+  let query = supabase
+    .from('appointments')
+    .select(`
+      *,
+      barber:barbers(id, first_name, last_name),
+      service:services(id, name, price)
+    `)
+    .order('appt_time', { ascending: false });
+
+  if (filters.status) {
+    query = query.eq('status', filters.status);
+  }
+  if (filters.barberId) {
+    query = query.eq('barber_id', filters.barberId);
+  }
+  if (filters.dateFrom) {
+    query = query.gte('appt_time', filters.dateFrom);
+  }
+  if (filters.dateTo) {
+    query = query.lte('appt_time', filters.dateTo);
+  }
+
+  const { data, error } = await query;
+  if (error) throw error;
+  return data;
+};
+
+export const updateAppointment = async (id, updates) => {
+  const { data, error } = await supabase
+    .from('appointments')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+};
+
 export default supabase;
