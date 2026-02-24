@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getBarbers, deleteBarber } from '../../../lib/supabaseClient';
 import BarberForm from '../BarberForm/BarberForm';
+import BarberSchedule from '../BarberSchedule/BarberSchedule';
 import './AdminBarbers.css';
 
 const AdminBarbers = () => {
@@ -8,6 +9,7 @@ const AdminBarbers = () => {
   const [loading, setLoading] = useState(true);
   const [editingBarber, setEditingBarber] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [scheduleBarber, setScheduleBarber] = useState(null);
 
   const loadBarbers = async () => {
     try {
@@ -56,6 +58,10 @@ const AdminBarbers = () => {
     loadBarbers();
   };
 
+  const handleSchedule = (barber) => {
+    setScheduleBarber(barber);
+  };
+
   if (loading) return <div className="admin__loading">Loading...</div>;
 
   return (
@@ -92,6 +98,12 @@ const AdminBarbers = () => {
                   Edit
                 </button>
                 <button
+                  className="admin-barbers__card-schedule"
+                  onClick={() => handleSchedule(barber)}
+                >
+                  Schedule
+                </button>
+                <button
                   className="admin-barbers__card-delete"
                   onClick={() => handleDelete(barber)}
                 >
@@ -108,6 +120,13 @@ const AdminBarbers = () => {
           barber={editingBarber}
           onClose={handleFormClose}
           onSave={handleFormSave}
+        />
+      )}
+
+      {scheduleBarber && (
+        <BarberSchedule
+          barber={scheduleBarber}
+          onClose={() => setScheduleBarber(null)}
         />
       )}
     </section>

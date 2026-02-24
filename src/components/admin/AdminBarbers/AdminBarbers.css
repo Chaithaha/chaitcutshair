@@ -105,6 +105,10 @@
   border-color: #000;
 }
 
+.admin-barbers__card-schedule {
+  border-color: #000;
+}
+
 .admin-barbers__card-delete {
   color: #cc0000;
 }
