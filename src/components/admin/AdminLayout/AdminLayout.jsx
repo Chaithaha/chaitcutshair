@@ -48,7 +48,9 @@ const AdminLayout = ({ children }) => {
       {/* Admin Navigation */}
       <nav className="admin__nav">
         <div className="admin__nav-container">
-          <h1 className="admin__nav-title">Admin Dashboard</h1>
+          <a href="/admin" className="admin__nav-logo">
+            <img src="/logo.png" alt="CHAITcutsHair" />
+          </a>
           <ul className="admin__nav-links">
             <li><a href="#admin-appointments">Appointments</a></li>
             <li><a href="#admin-barbers">Barbers</a></li>
