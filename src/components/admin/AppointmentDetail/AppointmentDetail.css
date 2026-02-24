@@ -98,7 +98,7 @@
   margin-top: 8px;
 }
 
-.appointment-detail__cancel {
+.appointment-detail__delete {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.15em;
@@ -110,7 +110,7 @@
   cursor: pointer;
 }
 
-.appointment-detail__cancel:hover {
+.appointment-detail__delete:hover {
   background: rgba(204, 0, 0, 0.1);
 }
 

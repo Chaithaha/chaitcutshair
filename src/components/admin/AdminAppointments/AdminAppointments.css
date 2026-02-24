@@ -40,7 +40,7 @@
 
 .admin-appointments__row {
   display: grid;
-  grid-template-columns: 1fr 80px 1.5fr 1.2fr 1.5fr 100px 80px;
+  grid-template-columns: 1fr 80px 1.5fr 1.2fr 1.5fr 80px;
   gap: 16px;
   padding: 14px 16px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
@@ -59,17 +59,6 @@
 .admin-appointments__row:not(.admin-appointments__row--header):hover {
   background: #fafafa;
   cursor: pointer;
-}
-
-.admin-appointments__status {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 100px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: white;
 }
 
 .admin-appointments__edit {

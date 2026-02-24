@@ -242,4 +242,13 @@ export const updateAppointment = async (id, updates) => {
   return data;
 };
 
+export const deleteAppointment = async (id) => {
+  const { error } = await supabase
+    .from('appointments')
+    .delete()
+    .eq('id', id);
+
+  if (error) throw error;
+};
+
 export default supabase;

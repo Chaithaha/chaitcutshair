@@ -52,16 +52,6 @@ const AdminAppointments = () => {
     });
   };
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'confirmed': return 'black';
-      case 'cancelled': return '#999';
-      case 'completed': return '#666';
-      case 'pending': return '#b89b00';
-      default: return 'black';
-    }
-  };
-
   return (
     <section id="admin-appointments" className="admin__section">
       <div className="admin__section-header">
@@ -111,7 +101,6 @@ const AdminAppointments = () => {
             <div>Customer</div>
             <div>Barber</div>
             <div>Service</div>
-            <div>Status</div>
             <div></div>
           </div>
 
@@ -128,14 +117,6 @@ const AdminAppointments = () => {
                 {apt.barber?.first_name} {apt.barber?.last_name}
               </div>
               <div>{apt.service?.name}</div>
-              <div>
-                <span
-                  className="admin-appointments__status"
-                  style={{ backgroundColor: getStatusColor(apt.status) }}
-                >
-                  {apt.status}
-                </span>
-              </div>
               <div>
                 <button className="admin-appointments__edit">Edit</button>
               </div>

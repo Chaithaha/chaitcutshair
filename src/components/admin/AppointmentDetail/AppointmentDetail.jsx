@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
-import { updateAppointment, getBarbers, getServices } from '../../../lib/supabaseClient';
+import { updateAppointment, deleteAppointment, getBarbers, getServices } from '../../../lib/supabaseClient';
 import './AppointmentDetail.css';
 
 const AppointmentDetail = ({ appointment, onClose, onSave }) => {
   const [barbers, setBarbers] = useState([]);
   const [services, setServices] = useState([]);
   const [formData, setFormData] = useState({
-    status: appointment.status,
     barberId: appointment.barber_id,
     serviceId: appointment.service_id,
     date: new Date(appointment.appt_time).toISOString().split('T')[0],
@@ -42,7 +41,6 @@ const AppointmentDetail = ({ appointment, onClose, onSave }) => {
         service_id: formData.serviceId,
         appt_time: apptTime.toISOString(),
         end_time: endTime.toISOString(),
-        status: formData.status,
       });
       onSave();
     } catch (err) {
@@ -56,14 +54,15 @@ const AppointmentDetail = ({ appointment, onClose, onSave }) => {
     setFormData({ ...formData, [field]: e.target.value });
   };
 
-  const handleCancel = async () => {
-    if (!confirm('Cancel this appointment?')) return;
+  const handleDelete = async () => {
+    if (!confirm('Delete this appointment?')) return;
 
     try {
-      await updateAppointment(appointment.id, { status: 'cancelled' });
+      await deleteAppointment(appointment.id);
       onSave();
+      onClose();
     } catch (err) {
-      alert('Failed to cancel appointment');
+      alert('Failed to delete appointment');
     }
   };
 
@@ -88,16 +87,6 @@ const AppointmentDetail = ({ appointment, onClose, onSave }) => {
                 <span>{appointment.customer_phone}</span>
               </div>
             )}
-          </div>
-
-          <div className="appointment-detail__field">
-            <label>Status</label>
-            <select value={formData.status} onChange={handleChange('status')}>
-              <option value="pending">Pending</option>
-              <option value="confirmed">Confirmed</option>
-              <option value="completed">Completed</option>
-              <option value="cancelled">Cancelled</option>
-            </select>
           </div>
 
           <div className="appointment-detail__field">
@@ -135,8 +124,8 @@ const AppointmentDetail = ({ appointment, onClose, onSave }) => {
           {error && <div className="appointment-detail__error">{error}</div>}
 
           <div className="appointment-detail__actions">
-            <button type="button" className="appointment-detail__cancel" onClick={handleCancel}>
-              Cancel Appointment
+            <button type="button" className="appointment-detail__delete" onClick={handleDelete}>
+              Delete
             </button>
             <button type="button" className="appointment-detail__close-btn" onClick={onClose}>
               Close
