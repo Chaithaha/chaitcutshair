@@ -1,4 +1,4 @@
-import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { serve } from 'https://deno.land/std@0.224.0/http/server.ts';
 
 const resendApiKey = Deno.env.get('RESEND_API_KEY');
 
@@ -59,41 +59,203 @@ serve(async (req) => {
         minute: '2-digit',
       });
 
-      // Customer email
+      // Customer email - Modern branded design
       const customerEmail = `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <div style="text-align: center; margin-bottom: 30px;">
-            <img src="https://chaithairshair.com/logo.png" alt="ChaitCutsHair" style="height: 60px;" />
-          </div>
-          <h1 style="color: #000; text-transform: uppercase; letter-spacing: 2px; margin: 0; font-size: 24px;">Booking Confirmed</h1>
-          <p style="color: #666;">Hi ${appointment.customer_first_name} ${appointment.customer_last_name},</p>
-          <p style="color: #000;">Your appointment has been booked:</p>
-          <div style="background: #f5f5f5; padding: 20px; margin: 20px 0; border: 1px solid #000;">
-            <p style="margin: 5px 0;"><strong>Barber:</strong> ${appointment.barber.first_name} ${appointment.barber.last_name}</p>
-            <p style="margin: 5px 0;"><strong>Service:</strong> ${appointment.service.name}</p>
-            <p style="margin: 5px 0;"><strong>Date:</strong> ${dateStr}</p>
-            <p style="margin: 5px 0;"><strong>Time:</strong> ${timeStr}</p>
-          </div>
-          <p style="color: #000;">We'll see you then!</p>
-          <p style="color: #666; font-size: 12px;">ChaitCutsHair</p>
-        </div>
-      `;
-      await sendEmail({ to: appointment.customer_email, subject: 'Booking Confirmed - ChaitCutsHair', html: customerEmail });
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Booking Confirmed</title>
+        </head>
+        <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; background-color: #0a0a0a;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #0a0a0a;">
+            <tr>
+              <td style="padding: 40px 20px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width: 600px; margin: 0 auto; background-color: #111111; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.5);">
 
-      // Barber email
+                  <!-- Header -->
+                  <tr>
+                    <td style="background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%); padding: 48px 40px; text-align: center; border-bottom: 1px solid #222;">
+                      <!-- Logo -->
+                      <div style="margin-bottom: 24px;">
+                        <img src="https://nkelkwpwfovufxjpvqjy.supabase.co/storage/v1/object/public/CCHbucket/logo.png" alt="CHAITcutsHair" style="height: 48px; display: block; margin: 0 auto;" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                        <div style="display: none; font-size: 32px; font-weight: 700; letter-spacing: 4px; color: #fff; text-transform: uppercase;">CHAIT<span style="color: #666;">cuts</span>Hair</div>
+                      </div>
+                      <h1 style="margin: 0; font-size: 14px; font-weight: 600; letter-spacing: 3px; color: #888; text-transform: uppercase;">Booking Confirmed</h1>
+                    </td>
+                  </tr>
+
+                  <!-- Main Content -->
+                  <tr>
+                    <td style="padding: 48px 40px;">
+                      <p style="margin: 0 0 12px 0; font-size: 16px; color: #fff;">Hey ${appointment.customer_first_name},</p>
+                      <p style="margin: 0 0 32px 0; font-size: 16px; color: #888; line-height: 1.6;">Your appointment has been booked. Here are the details:</p>
+
+                      <!-- Appointment Details Card -->
+                      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #1a1a1a; border-radius: 12px; overflow: hidden; border: 1px solid #222;">
+                        <tr>
+                          <td style="padding: 32px;">
+                            <!-- Detail Row: Barber -->
+                            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                              <tr>
+                                <td style="padding-bottom: 20px; border-bottom: 1px solid #222;">
+                                  <p style="margin: 0 0 4px 0; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; color: #666; text-transform: uppercase;">Barber</p>
+                                  <p style="margin: 0; font-size: 18px; font-weight: 600; color: #fff;">${appointment.barber.first_name} ${appointment.barber.last_name}</p>
+                                </td>
+                              </tr>
+                            </table>
+
+                            <!-- Detail Row: Service -->
+                            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                              <tr>
+                                <td style="padding: 20px 0; border-bottom: 1px solid #222;">
+                                  <p style="margin: 0 0 4px 0; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; color: #666; text-transform: uppercase;">Service</p>
+                                  <p style="margin: 0; font-size: 18px; font-weight: 600; color: #fff;">${appointment.service.name}</p>
+                                </td>
+                              </tr>
+                            </table>
+
+                            <!-- Detail Row: Date & Time -->
+                            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                              <tr>
+                                <td style="padding-top: 20px;">
+                                  <p style="margin: 0 0 4px 0; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; color: #666; text-transform: uppercase;">Date & Time</p>
+                                  <p style="margin: 0; font-size: 18px; font-weight: 600; color: #fff;">${dateStr}</p>
+                                  <p style="margin: 4px 0 0 0; font-size: 16px; color: #888;">${timeStr}</p>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+
+                      <!-- CTA Section -->
+                      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top: 40px;">
+                        <tr>
+                          <td style="text-align: center;">
+                            <p style="margin: 0 0 24px 0; font-size: 14px; color: #888;">Need to make changes? Reply to this email.</p>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+
+                  <!-- Footer -->
+                  <tr>
+                    <td style="padding: 32px 40px; background-color: #0a0a0a; border-top: 1px solid #222; text-align: center;">
+                      <p style="margin: 0; font-size: 12px; color: #555;">© 2026 CHAITcutsHair. All rights reserved.</p>
+                    </td>
+                  </tr>
+
+                </table>
+              </td>
+            </tr>
+          </table>
+        </body>
+        </html>
+      `;
+      await sendEmail({ to: appointment.customer_email, subject: 'Booking Confirmed - CHAITcutsHair', html: customerEmail });
+
+      // Barber email - Modern design with customer info
       const barberEmailHtml = `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h1 style="color: #000; text-transform: uppercase; letter-spacing: 2px; margin: 0; font-size: 24px;">New Booking</h1>
-          <p style="color: #000;">You have a new appointment:</p>
-          <div style="background: #f5f5f5; padding: 20px; margin: 20px 0; border: 1px solid #000;">
-            <p style="margin: 5px 0;"><strong>Customer:</strong> ${appointment.customer_first_name} ${appointment.customer_last_name}</p>
-            <p style="margin: 5px 0;"><strong>Email:</strong> ${appointment.customer_email}</p>
-            ${appointment.customer_phone ? `<p style="margin: 5px 0;"><strong>Phone:</strong> ${appointment.customer_phone}</p>` : ''}
-            <p style="margin: 5px 0;"><strong>Service:</strong> ${appointment.service.name}</p>
-            <p style="margin: 5px 0;"><strong>Date:</strong> ${dateStr}</p>
-            <p style="margin: 5px 0;"><strong>Time:</strong> ${timeStr}</p>
-          </div>
-        </div>
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>New Booking</title>
+        </head>
+        <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; background-color: #0a0a0a;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #0a0a0a;">
+            <tr>
+              <td style="padding: 40px 20px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width: 600px; margin: 0 auto; background-color: #111111; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.5);">
+
+                  <!-- Header -->
+                  <tr>
+                    <td style="background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%); padding: 48px 40px; text-align: center; border-bottom: 1px solid #222;">
+                      <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #fff 0%, #ccc 100%); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2">
+                          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                          <circle cx="9" cy="7" r="4"/>
+                          <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                      </div>
+                      <h1 style="margin: 0; font-size: 14px; font-weight: 600; letter-spacing: 3px; color: #888; text-transform: uppercase;">New Booking Alert</h1>
+                    </td>
+                  </tr>
+
+                  <!-- Main Content -->
+                  <tr>
+                    <td style="padding: 48px 40px;">
+                      <p style="margin: 0 0 32px 0; font-size: 16px; color: #888; line-height: 1.6;">You have a new appointment request:</p>
+
+                      <!-- Customer Details Card -->
+                      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #1a1a1a; border-radius: 12px; overflow: hidden; border: 1px solid #222;">
+                        <tr>
+                          <td style="padding: 32px;">
+                            <!-- Customer Name -->
+                            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                              <tr>
+                                <td style="padding-bottom: 20px; border-bottom: 1px solid #222;">
+                                  <p style="margin: 0 0 4px 0; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; color: #666; text-transform: uppercase;">Customer</p>
+                                  <p style="margin: 0; font-size: 18px; font-weight: 600; color: #fff;">${appointment.customer_first_name} ${appointment.customer_last_name}</p>
+                                </td>
+                              </tr>
+                            </table>
+
+                            <!-- Contact Info -->
+                            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                              <tr>
+                                <td style="padding: 20px 0; border-bottom: 1px solid #222;">
+                                  <p style="margin: 0 0 4px 0; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; color: #666; text-transform: uppercase;">Email</p>
+                                  <p style="margin: 0; font-size: 16px; color: #fff;">${appointment.customer_email}</p>
+                                  ${appointment.customer_phone ? `<p style="margin: 8px 0 0 0; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; color: #666; text-transform: uppercase;">Phone</p>
+                                  <p style="margin: 4px 0 0 0; font-size: 16px; color: #fff;">${appointment.customer_phone}</p>` : ''}
+                                </td>
+                              </tr>
+                            </table>
+
+                            <!-- Service -->
+                            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                              <tr>
+                                <td style="padding: 20px 0; border-bottom: 1px solid #222;">
+                                  <p style="margin: 0 0 4px 0; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; color: #666; text-transform: uppercase;">Service</p>
+                                  <p style="margin: 0; font-size: 18px; font-weight: 600; color: #fff;">${appointment.service.name}</p>
+                                </td>
+                              </tr>
+                            </table>
+
+                            <!-- Date & Time -->
+                            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                              <tr>
+                                <td style="padding-top: 20px;">
+                                  <p style="margin: 0 0 4px 0; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; color: #666; text-transform: uppercase;">Date & Time</p>
+                                  <p style="margin: 0; font-size: 18px; font-weight: 600; color: #fff;">${dateStr}</p>
+                                  <p style="margin: 4px 0 0 0; font-size: 16px; color: #888;">${timeStr}</p>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+
+                  <!-- Footer -->
+                  <tr>
+                    <td style="padding: 32px 40px; background-color: #0a0a0a; border-top: 1px solid #222; text-align: center;">
+                      <p style="margin: 0; font-size: 12px; color: #555;">CHAITcutsHair Booking System</p>
+                    </td>
+                  </tr>
+
+                </table>
+              </td>
+            </tr>
+          </table>
+        </body>
+        </html>
       `;
       await sendEmail({ to: barberEmail, subject: `New Booking: ${appointment.customer_first_name} ${appointment.customer_last_name}`, html: barberEmailHtml });
 
@@ -110,19 +272,105 @@ serve(async (req) => {
       });
 
       const cancelledEmail = `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h1 style="color: #000; text-transform: uppercase; letter-spacing: 2px; margin: 0; font-size: 24px;">Booking Cancelled</h1>
-          <p style="color: #000;">The following appointment has been cancelled:</p>
-          <div style="background: #f5f5f5; padding: 20px; margin: 20px 0; border: 1px solid #000;">
-            <p style="margin: 5px 0;"><strong>Customer:</strong> ${appointment.customer_first_name} ${appointment.customer_last_name}</p>
-            <p style="margin: 5px 0;"><strong>Barber:</strong> ${appointment.barber?.first_name} ${appointment.barber?.last_name}</p>
-            <p style="margin: 5px 0;"><strong>Service:</strong> ${appointment.service?.name}</p>
-            <p style="margin: 5px 0;"><strong>Date:</strong> ${dateStr}</p>
-            <p style="margin: 5px 0;"><strong>Time:</strong> ${timeStr}</p>
-          </div>
-        </div>
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Booking Cancelled</title>
+        </head>
+        <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; background-color: #0a0a0a;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #0a0a0a;">
+            <tr>
+              <td style="padding: 40px 20px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width: 600px; margin: 0 auto; background-color: #111111; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.5);">
+
+                  <!-- Header -->
+                  <tr>
+                    <td style="background: linear-gradient(135deg, #2a1a1a 0%, #1a0a0a 100%); padding: 48px 40px; text-align: center; border-bottom: 1px solid #331111;">
+                      <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5">
+                          <path d="M18 6 6 18M6 6l12 12"/>
+                        </svg>
+                      </div>
+                      <h1 style="margin: 0; font-size: 14px; font-weight: 600; letter-spacing: 3px; color: #ff6666; text-transform: uppercase;">Booking Cancelled</h1>
+                    </td>
+                  </tr>
+
+                  <!-- Main Content -->
+                  <tr>
+                    <td style="padding: 48px 40px;">
+                      <p style="margin: 0 0 32px 0; font-size: 16px; color: #888; line-height: 1.6;">The following appointment has been cancelled:</p>
+
+                      <!-- Appointment Details Card -->
+                      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #1a1a1a; border-radius: 12px; overflow: hidden; border: 1px solid #331111;">
+                        <tr>
+                          <td style="padding: 32px;">
+                            <!-- Customer -->
+                            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                              <tr>
+                                <td style="padding-bottom: 20px; border-bottom: 1px solid #221111;">
+                                  <p style="margin: 0 0 4px 0; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; color: #666; text-transform: uppercase;">Customer</p>
+                                  <p style="margin: 0; font-size: 18px; font-weight: 600; color: #fff;">${appointment.customer_first_name} ${appointment.customer_last_name}</p>
+                                </td>
+                              </tr>
+                            </table>
+
+                            <!-- Barber -->
+                            ${appointment.barber ? `
+                            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                              <tr>
+                                <td style="padding: 20px 0; border-bottom: 1px solid #221111;">
+                                  <p style="margin: 0 0 4px 0; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; color: #666; text-transform: uppercase;">Barber</p>
+                                  <p style="margin: 0; font-size: 18px; font-weight: 600; color: #fff;">${appointment.barber.first_name} ${appointment.barber.last_name}</p>
+                                </td>
+                              </tr>
+                            </table>
+                            ` : ''}
+
+                            <!-- Service -->
+                            ${appointment.service ? `
+                            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                              <tr>
+                                <td style="padding: 20px 0; border-bottom: 1px solid #221111;">
+                                  <p style="margin: 0 0 4px 0; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; color: #666; text-transform: uppercase;">Service</p>
+                                  <p style="margin: 0; font-size: 18px; font-weight: 600; color: #fff;">${appointment.service.name}</p>
+                                </td>
+                              </tr>
+                            </table>
+                            ` : ''}
+
+                            <!-- Date & Time -->
+                            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                              <tr>
+                                <td style="padding-top: 20px;">
+                                  <p style="margin: 0 0 4px 0; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; color: #666; text-transform: uppercase;">Date & Time</p>
+                                  <p style="margin: 0; font-size: 18px; font-weight: 600; color: #fff;">${dateStr}</p>
+                                  <p style="margin: 4px 0 0 0; font-size: 16px; color: #888;">${timeStr}</p>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+
+                  <!-- Footer -->
+                  <tr>
+                    <td style="padding: 32px 40px; background-color: #0a0a0a; border-top: 1px solid #222; text-align: center;">
+                      <p style="margin: 0; font-size: 12px; color: #555;">CHAITcutsHair Booking System</p>
+                    </td>
+                  </tr>
+
+                </table>
+              </td>
+            </tr>
+          </table>
+        </body>
+        </html>
       `;
-      await sendEmail({ to: barberEmail, subject: 'Booking Cancelled - ChaitCutsHair', html: cancelledEmail });
+      await sendEmail({ to: barberEmail, subject: 'Booking Cancelled - CHAITcutsHair', html: cancelledEmail });
     }
 
     return new Response(JSON.stringify({ success: true }), {
