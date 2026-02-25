@@ -16,7 +16,6 @@ import './BarbersPage.css';
 
 const BarberCard = ({ barber, index, onBook }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef(null);
 
   const barberName = `${barber.first_name} ${barber.last_name}`;
@@ -44,9 +43,7 @@ const BarberCard = ({ barber, index, onBook }) => {
   return (
     <article
       ref={cardRef}
-      className={`barbers-page__card ${isVisible ? 'barbers-page__card--visible' : ''} ${isHovered ? 'barbers-page__card--hovered' : ''}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className={`barbers-page__card ${isVisible ? 'barbers-page__card--visible' : ''}`}
     >
       {/* Image/Placeholder */}
       <div className="barbers-page__card-image">
@@ -102,6 +99,7 @@ const BarbersPage = ({ onBookBarber }) => {
     const fetchBarbers = async () => {
       try {
         const data = await getBarbers();
+        console.log('Barbers data:', data);
         setBarbers(data);
       } catch (err) {
         setError('Failed to load barbers');
