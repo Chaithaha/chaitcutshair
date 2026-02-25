@@ -298,4 +298,59 @@ export const deleteAppointment = async (id) => {
   }
 };
 
+// ============================================
+// STORAGE UPLOAD FUNCTIONS
+// ============================================
+
+/**
+ * Upload a barber profile image to Supabase Storage
+ * @param {File} file - The image file to upload
+ * @param {string} barberId - Optional barber ID for organizing files
+ * @returns {Promise<string>} - The public URL of the uploaded image
+ */
+export const uploadBarberImage = async (file, barberId = null) => {
+  // Generate unique filename
+  const fileExt = file.name.split('.').pop();
+  const fileName = barberId
+    ? `${barberId}/${Date.now()}.${fileExt}`
+    : `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+
+  const { data, error } = await supabase.storage
+    .from('CCHbucket')
+    .upload(`barbers/${fileName}`, file, {
+      cacheControl: '3600',
+      upsert: false,
+    });
+
+  if (error) {
+    console.error('Upload error:', error);
+    throw new Error(`Failed to upload image: ${error.message}`);
+  }
+
+  // Get public URL
+  const { data: urlData } = supabase.storage
+    .from('CCHbucket')
+    .getPublicUrl(data.path);
+
+  return urlData.publicUrl;
+};
+
+/**
+ * Delete a barber image from Supabase Storage
+ * @param {string} url - The public URL of the image to delete
+ */
+export const deleteBarberImage = async (url) => {
+  try {
+    // Extract path from URL
+    const urlObj = new URL(url);
+    const pathParts = urlObj.pathname.split('/CCHbucket/')[1];
+    if (!pathParts) return;
+
+    await supabase.storage.from('CCHbucket').remove([pathParts]);
+  } catch (err) {
+    console.error('Failed to delete image:', err);
+    // Don't throw - image deletion is not critical
+  }
+};
+
 export default supabase;
