@@ -155,10 +155,6 @@ const ServicesPage = ({ onBookService }) => {
       <div className="services-page__container">
         {/* Header */}
         <header ref={headerRef} className={`services-page__header ${headerVisible ? 'services-page__header--visible' : ''}`}>
-          <div className="services-page__header-badge">
-            <span className="services-page__header-badge-dot"></span>
-            <span>Our Menu</span>
-          </div>
           <h1 className="services-page__title">
             <span className="services-page__title-line">Premium</span>
             <span className="services-page__title-line services-page__title-line--outline">Grooming</span>
