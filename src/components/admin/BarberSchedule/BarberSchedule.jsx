@@ -29,9 +29,11 @@ const BarberSchedule = ({ barber, onClose }) => {
 
   const loadSchedules = async () => {
     const year = currentDate.getFullYear();
-    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-    const firstDay = `${year}-${month}-01`;
-    const lastDay = `${year}-${month}-31`;
+    const month = currentDate.getMonth();
+    const firstDay = `${year}-${String(month + 1).padStart(2, '0')}-01`;
+    // Get the actual last day of the month
+    const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
+    const lastDay = `${year}-${String(month + 1).padStart(2, '0')}-${String(lastDayOfMonth).padStart(2, '0')}`;
 
     try {
       const data = await getBarberSchedules(barber.id, firstDay, lastDay);
