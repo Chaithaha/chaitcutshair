@@ -172,21 +172,6 @@ const BarbersPage = ({ onBookBarber }) => {
           )}
         </div>
 
-        {/* Join Team CTA */}
-        <div className="barbers-page__join">
-          <div className="barbers-page__join-content">
-            <span className="barbers-page__join-badge">We're Hiring</span>
-            <h3 className="barbers-page__join-title">Join Our Team</h3>
-            <p className="barbers-page__join-text">
-              Are you a talented barber looking for a new home? We're always looking for passionate professionals.
-            </p>
-            <a href="#contact" className="barbers-page__join-cta">Get in Touch</a>
-          </div>
-          <div className="barbers-page__join-graphic">
-            <div className="barbers-page__join-circle"></div>
-            <div className="barbers-page__join-circle barbers-page__join-circle--2"></div>
-          </div>
-        </div>
       </div>
     </section>
   );
