@@ -112,7 +112,7 @@ const AdminAppointments = () => {
             >
               <div>{formatDate(apt.appt_time)}</div>
               <div>{formatTime(apt.appt_time)}</div>
-              <div>{apt.customer_name}</div>
+              <div>{apt.customer_first_name} {apt.customer_last_name}</div>
               <div>
                 {apt.barber?.first_name} {apt.barber?.last_name}
               </div>
