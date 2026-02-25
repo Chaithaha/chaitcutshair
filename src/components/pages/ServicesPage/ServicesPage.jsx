@@ -51,6 +51,13 @@ const ServiceCard = ({ service, index, onBook }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
+      {/* Service Image */}
+      {service.service_img && (
+        <div className="services-page__card-image">
+          <img src={service.service_img} alt={service.name} />
+        </div>
+      )}
+
       {/* Background Number */}
       <span className="services-page__card-bg-number">{serviceNumber}</span>
 
