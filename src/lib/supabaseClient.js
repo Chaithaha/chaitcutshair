@@ -190,6 +190,56 @@ export const createBarber = async (barberData) => {
   return data;
 };
 
+// Weekly Availability CRUD
+export const getWeeklyAvailability = async (barberId) => {
+  const { data, error } = await supabase
+    .from('weekly_availability')
+    .select('*')
+    .eq('barber_id', barberId)
+    .order('day_of_week');
+
+  if (error) throw error;
+  return data;
+};
+
+export const updateWeeklyAvailability = async (barberId, dayOfWeek, updates) => {
+  const { data, error } = await supabase
+    .from('weekly_availability')
+    .upsert({
+      barber_id: barberId,
+      day_of_week: dayOfWeek,
+      ...updates,
+    }, {
+      onConflict: 'barber_id,day_of_week'
+    })
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+};
+
+export const setWeeklyAvailability = async (barberId, availability) => {
+  // availability is an array of { dayOfWeek, isAvailable, startTime, endTime }
+  const records = availability.map(a => ({
+    barber_id: barberId,
+    day_of_week: a.dayOfWeek,
+    is_available: a.isAvailable,
+    start_time: a.startTime || '09:00',
+    end_time: a.endTime || '18:00',
+  }));
+
+  const { data, error } = await supabase
+    .from('weekly_availability')
+    .upsert(records, {
+      onConflict: 'barber_id,day_of_week'
+    })
+    .select();
+
+  if (error) throw error;
+  return data;
+};
+
 // Schedules CRUD
 export const updateSchedule = async (barberId, date, updates) => {
   const { data, error } = await supabase

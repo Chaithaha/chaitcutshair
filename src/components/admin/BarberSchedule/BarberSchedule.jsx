@@ -1,16 +1,31 @@
 import { useState, useEffect } from 'react';
-import { getBarberSchedules, updateSchedule } from '../../../lib/supabaseClient';
+import { getBarberSchedules, updateSchedule, getWeeklyAvailability } from '../../../lib/supabaseClient';
 import './BarberSchedule.css';
 
 const BarberSchedule = ({ barber, onClose }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [schedules, setSchedules] = useState({});
+  const [weeklyAvailability, setWeeklyAvailability] = useState({});
   const [selectedDate, setSelectedDate] = useState(null);
   const [editData, setEditData] = useState({ isAvailable: true, startTime: '09:00', endTime: '18:00' });
 
   useEffect(() => {
     loadSchedules();
+    loadWeeklyAvailability();
   }, [barber.id, currentDate]);
+
+  const loadWeeklyAvailability = async () => {
+    try {
+      const data = await getWeeklyAvailability(barber.id);
+      const availabilityMap = {};
+      data.forEach(a => {
+        availabilityMap[a.day_of_week] = a;
+      });
+      setWeeklyAvailability(availabilityMap);
+    } catch (err) {
+      console.error('Failed to load weekly availability:', err);
+    }
+  };
 
   const loadSchedules = async () => {
     const year = currentDate.getFullYear();
@@ -114,7 +129,20 @@ const BarberSchedule = ({ barber, onClose }) => {
             const month = String(currentDate.getMonth() + 1).padStart(2, '0');
             const dateStr = day ? `${year}-${month}-${String(day).padStart(2, '0')}` : null;
             const schedule = dateStr ? schedules[dateStr] : null;
-            const isSunday = day && new Date(year, currentDate.getMonth(), day).getDay() === 0;
+            const dayOfWeek = day ? new Date(year, currentDate.getMonth(), day).getDay() : null;
+            const weeklyAvail = dayOfWeek !== null ? weeklyAvailability[dayOfWeek] : null;
+            const isSunday = dayOfWeek === 0;
+
+            // Determine day status for styling:
+            // - orange: schedule explicitly set for this date
+            // - green: in weekly availability (default working day)
+            // - red: not in weekly availability and no schedule
+            const getDayStatus = () => {
+              if (!day) return '';
+              if (schedule) return 'barber-schedule__day--scheduled'; // orange - has schedule override
+              if (weeklyAvail?.is_available) return 'barber-schedule__day--available'; // green - default available
+              return 'barber-schedule__day--unavailable'; // red - not available
+            };
 
             return (
               <button
@@ -123,9 +151,7 @@ const BarberSchedule = ({ barber, onClose }) => {
                   !day ? 'barber-schedule__day--empty' : ''
                 } ${
                   isSunday ? 'barber-schedule__day--sunday' : ''
-                } ${
-                  schedule && !schedule.is_available ? 'barber-schedule__day--unavailable' : ''
-                }`}
+                } ${getDayStatus()}`}
                 onClick={() => handleDayClick(day)}
                 disabled={!day || isSunday}
               >
@@ -133,6 +159,21 @@ const BarberSchedule = ({ barber, onClose }) => {
               </button>
             );
           })}
+        </div>
+
+        <div className="barber-schedule__legend">
+          <div className="barber-schedule__legend-item">
+            <span className="barber-schedule__legend-color barber-schedule__legend-color--available"></span>
+            <span>Available</span>
+          </div>
+          <div className="barber-schedule__legend-item">
+            <span className="barber-schedule__legend-color barber-schedule__legend-color--scheduled"></span>
+            <span>Schedule Set</span>
+          </div>
+          <div className="barber-schedule__legend-item">
+            <span className="barber-schedule__legend-color barber-schedule__legend-color--unavailable"></span>
+            <span>Unavailable</span>
+          </div>
         </div>
 
         {selectedDate && (

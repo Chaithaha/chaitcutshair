@@ -108,11 +108,80 @@
 .barber-schedule__day--sunday {
   background: #f5f5f5;
   color: rgba(0, 0, 0, 0.5);
+  cursor: not-allowed;
 }
 
+/* Green - Default available (weekly availability) */
+.barber-schedule__day--available {
+  background: #d4edda;
+  border-color: #28a745;
+  color: #155724;
+}
+
+.barber-schedule__day--available:hover:not(:disabled) {
+  background: #c3e6cb;
+}
+
+/* Orange - Schedule explicitly set */
+.barber-schedule__day--scheduled {
+  background: #fff3cd;
+  border-color: #ffc107;
+  color: #856404;
+}
+
+.barber-schedule__day--scheduled:hover:not(:disabled) {
+  background: #ffe69c;
+}
+
+/* Red - Unavailable */
 .barber-schedule__day--unavailable {
-  background: #e5e5e5;
-  color: rgba(0, 0, 0, 0.5);
+  background: #f8d7da;
+  border-color: #dc3545;
+  color: #721c24;
+}
+
+.barber-schedule__day--unavailable:hover:not(:disabled) {
+  background: #f5c6cb;
+}
+
+/* Legend */
+.barber-schedule__legend {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 12px 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  flex-wrap: wrap;
+}
+
+.barber-schedule__legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.barber-schedule__legend-color {
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  border: 1px solid;
+}
+
+.barber-schedule__legend-color--available {
+  background: #d4edda;
+  border-color: #28a745;
+}
+
+.barber-schedule__legend-color--scheduled {
+  background: #fff3cd;
+  border-color: #ffc107;
+}
+
+.barber-schedule__legend-color--unavailable {
+  background: #f8d7da;
+  border-color: #dc3545;
 }
 
 .barber-schedule__edit {
