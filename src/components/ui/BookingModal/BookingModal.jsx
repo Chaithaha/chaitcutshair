@@ -343,21 +343,71 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }
                 ) : availableDates.length === 0 ? (
                   <p className="booking-modal__no-slots">No available dates for this barber in the next 30 days.</p>
                 ) : (
-                  <div className="booking-modal__date-grid">
-                    {availableDates.map((d) => (
-                      <button
-                        key={d.date}
-                        type="button"
-                        onClick={() => handleDateChange(d.date)}
-                        className={`booking-modal__date-slot ${
-                          formData.date === d.date ? 'booking-modal__date-slot--selected' : ''
-                        }`}
-                      >
-                        <span className="booking-modal__date-day">{d.dayName}</span>
-                        <span className="booking-modal__date-num">{d.dayNum}</span>
-                        <span className="booking-modal__date-month">{d.month}</span>
+                  <div className="booking-modal__calendar">
+                    <div className="booking-modal__calendar-header">
+                      <button type="button" onClick={() => {}} disabled className="booking-modal__calendar-nav">
+                        ‹
                       </button>
-                    ))}
+                      <span className="booking-modal__calendar-month">
+                        {new Date(availableDates[0]?.date).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                      </span>
+                      <button type="button" onClick={() => {}} disabled className="booking-modal__calendar-nav">
+                        ›
+                      </button>
+                    </div>
+                    <div className="booking-modal__calendar-weekdays">
+                      {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(day => (
+                        <span key={day}>{day}</span>
+                      ))}
+                    </div>
+                    <div className="booking-modal__calendar-days">
+                      {(() => {
+                        const availableSet = new Set(availableDates.map(d => d.date));
+                        const firstDate = new Date(availableDates[0]?.date);
+                        const year = firstDate.getFullYear();
+                        const month = firstDate.getMonth();
+                        const firstDayOfMonth = new Date(year, month, 1).getDay();
+                        const daysInMonth = new Date(year, month + 1, 0).getDate();
+                        const today = new Date().toISOString().split('T')[0];
+                        const maxDate = new Date();
+                        maxDate.setDate(maxDate.getDate() + 30);
+                        const maxDateStr = maxDate.toISOString().split('T')[0];
+
+                        const days = [];
+
+                        // Empty cells for days before the 1st
+                        for (let i = 0; i < firstDayOfMonth; i++) {
+                          days.push(<span key={`empty-${i}`} className="booking-modal__calendar-day booking-modal__calendar-day--empty"></span>);
+                        }
+
+                        // Days of the month
+                        for (let day = 1; day <= daysInMonth; day++) {
+                          const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                          const isAvailable = availableSet.has(dateStr);
+                          const isPast = dateStr < today;
+                          const isBeyondRange = dateStr > maxDateStr;
+                          const isSelected = formData.date === dateStr;
+
+                          days.push(
+                            <button
+                              key={day}
+                              type="button"
+                              disabled={!isAvailable || isPast || isBeyondRange}
+                              onClick={() => handleDateChange(dateStr)}
+                              className={`booking-modal__calendar-day ${
+                                isSelected ? 'booking-modal__calendar-day--selected' : ''
+                              } ${
+                                !isAvailable || isPast || isBeyondRange ? 'booking-modal__calendar-day--disabled' : ''
+                              }`}
+                            >
+                              {day}
+                            </button>
+                          );
+                        }
+
+                        return days;
+                      })()}
+                    </div>
                   </div>
                 )}
               </div>
