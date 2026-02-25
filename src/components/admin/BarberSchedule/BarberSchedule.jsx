@@ -136,12 +136,16 @@ const BarberSchedule = ({ barber, onClose }) => {
             const isSunday = dayOfWeek === 0;
 
             // Determine day status for styling:
-            // - orange: schedule explicitly set for this date
+            // - red: schedule set and unavailable
+            // - orange: schedule set and available
             // - green: in weekly availability (default working day)
             // - red: not in weekly availability and no schedule
             const getDayStatus = () => {
               if (!day) return '';
-              if (schedule) return 'barber-schedule__day--scheduled'; // orange - has schedule override
+              if (schedule) {
+                if (!schedule.is_available) return 'barber-schedule__day--unavailable'; // red - explicitly unavailable
+                return 'barber-schedule__day--scheduled'; // orange - schedule set and available
+              }
               if (weeklyAvail?.is_available) return 'barber-schedule__day--available'; // green - default available
               return 'barber-schedule__day--unavailable'; // red - not available
             };
