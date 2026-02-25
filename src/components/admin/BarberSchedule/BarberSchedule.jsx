@@ -137,7 +137,11 @@ const BarberSchedule = ({ barber, onClose }) => {
 
         {selectedDate && (
           <div className="barber-schedule__edit">
-            <h3>{new Date(selectedDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</h3>
+            <h3>{(() => {
+              const [year, month, day] = selectedDate.split('-');
+              const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+              return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            })()}</h3>
 
             <div className="barber-schedule__field">
               <label>Available</label>
