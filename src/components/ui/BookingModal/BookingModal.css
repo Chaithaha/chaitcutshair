@@ -291,10 +291,6 @@
   cursor: pointer;
 }
 
-.booking-modal__calendar-day:hover:not(:disabled):not(.booking-modal__calendar-day--empty) {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
 .booking-modal__calendar-day--selected {
   background-color: var(--color-black, #000);
   color: var(--color-white, #fff);
@@ -323,12 +319,6 @@
   background: none;
   font-size: 0.875rem;
   cursor: pointer;
-  transition: all 0.2s;
-}
-
-.booking-modal__time-slot:hover:not(:disabled) {
-  border-color: var(--color-black, #000);
-  background-color: rgba(0, 0, 0, 0.02);
 }
 
 .booking-modal__time-slot--selected {
