@@ -21,16 +21,16 @@ const Navigation = () => {
   const links = (
     <ul className="navigation__links">
       <li className="navigation__item">
-        <a href="#" className="navigation__link">Home</a>
+        <a href="/" className="navigation__link">Home</a>
       </li>
       <li className="navigation__item">
-        <a href="#services-page" className="navigation__link">Services</a>
+        <a href="/#services-page" className="navigation__link">Services</a>
       </li>
       <li className="navigation__item">
-        <a href="#barbers" className="navigation__link">Barbers</a>
+        <a href="/barbers" className="navigation__link">Barbers</a>
       </li>
       <li className="navigation__item">
-        <a href="#about" className="navigation__link">About</a>
+        <a href="/about" className="navigation__link">About</a>
       </li>
     </ul>
   );

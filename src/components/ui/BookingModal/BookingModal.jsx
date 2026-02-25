@@ -8,6 +8,7 @@
  * @param {boolean} props.isOpen - Whether the modal is open
  * @param {Function} props.onClose - Callback to close the modal
  * @param {Object} props.preselectedBarber - Optional preselected barber
+ * @param {Object} props.preselectedService - Optional preselected service
  * @returns {JSX.Element} The booking modal
  */
 
@@ -15,7 +16,7 @@ import { useState, useEffect } from 'react';
 import { getBarbers, getServices, getAvailableSlots, createAppointment } from '../../../lib/supabaseClient';
 import './BookingModal.css';
 
-const BookingModal = ({ isOpen, onClose, preselectedBarber }) => {
+const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }) => {
   const [step, setStep] = useState(1); // 1: Select barber, 2: Booking form
   const [barbers, setBarbers] = useState([]);
   const [services, setServices] = useState([]);
@@ -68,6 +69,13 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber }) => {
       setStep(2);
     }
   }, [preselectedBarber, isOpen]);
+
+  // Handle preselected service
+  useEffect(() => {
+    if (preselectedService && isOpen) {
+      setFormData((prev) => ({ ...prev, serviceId: preselectedService.id }));
+    }
+  }, [preselectedService, isOpen]);
 
   // Reset when modal closes
   useEffect(() => {

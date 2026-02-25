@@ -3,7 +3,8 @@
  *
  * The main application component that sets up the page structure:
  * - Navigation bar at the top
- * - Hero, About, Services, Barbers sections
+ * - Home page: Hero, Services, Reviews, Parking
+ * - Separate pages: Barbers, About
  * - Floating booking button
  * - Admin dashboard (protected route)
  *
@@ -17,6 +18,7 @@ import Hero from './components/sections/Hero/Hero';
 import About from './components/sections/About/About';
 import ServicesPage from './components/pages/ServicesPage/ServicesPage';
 import BarbersPage from './components/pages/BarbersPage/BarbersPage';
+import AboutPage from './components/pages/AboutPage/AboutPage';
 import Parking from './components/sections/Parking/Parking';
 import Reviews from './components/sections/Reviews/Reviews';
 import BookingButton from './components/ui/BookingButton/BookingButton';
@@ -26,6 +28,7 @@ import AdminDashboard from './components/admin/AdminDashboard/AdminDashboard';
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [preselectedBarber, setPreselectedBarber] = useState(null);
+  const [preselectedService, setPreselectedService] = useState(null);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -34,10 +37,16 @@ function App() {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setPreselectedBarber(null);
+    setPreselectedService(null);
   };
 
   const handleBookBarber = (barber) => {
     setPreselectedBarber(barber);
+    setIsModalOpen(true);
+  };
+
+  const handleBookService = (service) => {
+    setPreselectedService(service);
     setIsModalOpen(true);
   };
 
@@ -49,16 +58,45 @@ function App() {
           <>
             <Navigation />
             <Hero onOpenModal={handleOpenModal} />
-            <About />
-            <ServicesPage />
-            <BarbersPage onBookBarber={handleBookBarber} />
-            <Parking />
+            <ServicesPage onBookService={handleBookService} />
             <Reviews />
+            <Parking />
             <BookingButton
               isOpen={isModalOpen}
               onOpen={handleOpenModal}
               onClose={handleCloseModal}
               preselectedBarber={preselectedBarber}
+              preselectedService={preselectedService}
+            />
+          </>
+        } />
+
+        {/* Barbers page */}
+        <Route path="/barbers" element={
+          <>
+            <Navigation />
+            <BarbersPage onBookBarber={handleBookBarber} />
+            <BookingButton
+              isOpen={isModalOpen}
+              onOpen={handleOpenModal}
+              onClose={handleCloseModal}
+              preselectedBarber={preselectedBarber}
+              preselectedService={preselectedService}
+            />
+          </>
+        } />
+
+        {/* About page */}
+        <Route path="/about" element={
+          <>
+            <Navigation />
+            <AboutPage />
+            <BookingButton
+              isOpen={isModalOpen}
+              onOpen={handleOpenModal}
+              onClose={handleCloseModal}
+              preselectedBarber={preselectedBarber}
+              preselectedService={preselectedService}
             />
           </>
         } />

@@ -9,13 +9,14 @@
  * @param {Function} props.onOpen - Callback to open the modal
  * @param {Function} props.onClose - Callback to close the modal
  * @param {Object} props.preselectedBarber - Optional preselected barber
+ * @param {Object} props.preselectedService - Optional preselected service
  * @returns {JSX.Element} The floating booking button
  */
 
 import BookingModal from '../BookingModal/BookingModal';
 import './BookingButton.css';
 
-const BookingButton = ({ isOpen, onOpen, onClose, preselectedBarber }) => {
+const BookingButton = ({ isOpen, onOpen, onClose, preselectedBarber, preselectedService }) => {
   return (
     <>
       <button
@@ -43,6 +44,7 @@ const BookingButton = ({ isOpen, onOpen, onClose, preselectedBarber }) => {
         isOpen={isOpen}
         onClose={onClose}
         preselectedBarber={preselectedBarber}
+        preselectedService={preselectedService}
       />
     </>
   );
