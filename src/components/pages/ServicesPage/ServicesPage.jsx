@@ -164,10 +164,6 @@ const ServicesPage = ({ onBookService }) => {
             <span className="services-page__title-line services-page__title-line--outline">Grooming</span>
             <span className="services-page__title-line">Services</span>
           </h1>
-          <p className="services-page__subtitle">
-            Every service is delivered with precision, care, and the finest products.
-            No shortcuts—just exceptional results.
-          </p>
         </header>
 
         {/* Services Grid */}

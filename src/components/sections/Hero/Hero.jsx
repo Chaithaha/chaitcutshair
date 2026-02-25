@@ -31,8 +31,7 @@ const Hero = ({ onOpenModal }) => {
           Chait<span className="hero__headline-light">Cuts</span><span className="hero__headline-bold">Hair</span>
         </h1>
         <p className="hero__subheadline">
-          Premium grooming services tailored for the modern gentleman.
-          Book your next appointment in seconds.
+          Never worry about waiting again, book an appointment with us!
         </p>
         <button className="hero__cta" onClick={onOpenModal}>Schedule Appointment</button>
       </div>
