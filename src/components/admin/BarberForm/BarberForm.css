@@ -107,3 +107,79 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* Image Upload Styles */
+.barber-form__upload {
+  margin-top: 4px;
+}
+
+.barber-form__upload-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 32px 20px;
+  border: 2px dashed rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.barber-form__upload-btn:hover {
+  border-color: #000;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.barber-form__upload-btn input {
+  display: none;
+}
+
+.barber-form__upload-btn svg {
+  opacity: 0.4;
+}
+
+.barber-form__upload-btn span {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.barber-form__preview {
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.barber-form__preview img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+}
+
+.barber-form__remove-image {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border: none;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.barber-form__remove-image:hover {
+  background: #cc0000;
+}
+
+.barber-form__hint {
+  margin-top: 8px;
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.4);
+}

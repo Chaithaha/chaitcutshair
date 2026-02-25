@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { createBarber, updateBarber } from '../../../lib/supabaseClient';
+import { useState, useEffect, useRef } from 'react';
+import { createBarber, updateBarber, uploadBarberImage } from '../../../lib/supabaseClient';
 import './BarberForm.css';
 
 const BarberForm = ({ barber, onClose, onSave }) => {
@@ -13,6 +13,9 @@ const BarberForm = ({ barber, onClose, onSave }) => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     if (barber) {
@@ -24,6 +27,9 @@ const BarberForm = ({ barber, onClose, onSave }) => {
         specialty: barber.specialty || '',
         profileImg: barber.profile_img || '',
       });
+      setImagePreview(barber.profile_img || null);
+    } else {
+      setImagePreview(null);
     }
   }, [barber]);
 
@@ -57,6 +63,49 @@ const BarberForm = ({ barber, onClose, onSave }) => {
 
   const handleChange = (field) => (e) => {
     setFormData({ ...formData, [field]: e.target.value });
+  };
+
+  const handleFileSelect = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    if (!validTypes.includes(file.type)) {
+      setError('Please select a valid image file (JPEG, PNG, WebP, or GIF)');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Image size must be less than 5MB');
+      return;
+    }
+
+    // Show preview immediately
+    const previewUrl = URL.createObjectURL(file);
+    setImagePreview(previewUrl);
+    setError(null);
+
+    // Upload to Supabase Storage
+    setUploading(true);
+    try {
+      const publicUrl = await uploadBarberImage(file, barber?.id);
+      setFormData({ ...formData, profileImg: publicUrl });
+    } catch (err) {
+      setError(err.message || 'Failed to upload image');
+      setImagePreview(null);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setImagePreview(null);
+    setFormData({ ...formData, profileImg: '' });
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   return (
@@ -109,13 +158,39 @@ const BarberForm = ({ barber, onClose, onSave }) => {
           </div>
 
           <div className="barber-form__field">
-            <label>Profile Image URL</label>
-            <input
-              type="url"
-              value={formData.profileImg}
-              onChange={handleChange('profileImg')}
-              placeholder="https://..."
-            />
+            <label>Profile Image</label>
+            <div className="barber-form__upload">
+              {imagePreview ? (
+                <div className="barber-form__preview">
+                  <img src={imagePreview} alt="Preview" />
+                  <button
+                    type="button"
+                    className="barber-form__remove-image"
+                    onClick={handleRemoveImage}
+                    disabled={uploading}
+                  >
+                    Remove
+                  </button>
+                </div>
+              ) : (
+                <label className="barber-form__upload-btn">
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/gif"
+                    onChange={handleFileSelect}
+                    disabled={uploading}
+                  />
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                  <span>{uploading ? 'Uploading...' : 'Upload Image'}</span>
+                </label>
+              )}
+            </div>
+            <p className="barber-form__hint">JPEG, PNG, WebP or GIF. Max 5MB.</p>
           </div>
 
           {error && <div className="barber-form__error">{error}</div>}
