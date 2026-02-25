@@ -38,12 +38,15 @@
 /* Main headline text */
 .hero__headline {
   font-family: 'Dunkies', sans-serif;
-  font-size: 64px;
+  font-size: clamp(36px, 12vw, 64px);
   font-weight: normal;
   line-height: 1;
   margin-bottom: 24px;
   letter-spacing: var(--letter-spacing-tight);
   text-transform: none !important;
+  width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 /* Lighter weight part of the headline */
@@ -104,6 +107,6 @@
 
   /* Larger headline on desktop */
   .hero__headline {
-    font-size: 96px;
+    font-size: clamp(64px, 10vw, 96px);
   }
 }
