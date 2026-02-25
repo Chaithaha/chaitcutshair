@@ -3,6 +3,14 @@
  * Styles for the main hero section
  */
 
+/* Custom Font */
+@font-face {
+  font-family: 'Dunkies';
+  src: url('../../../assets/dunkies-font/DunkiesRegular-nAezJ.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* Main hero section */
 .hero {
   position: relative;
@@ -29,12 +37,13 @@
 
 /* Main headline text */
 .hero__headline {
-  font-size: 48px;
-  font-weight: var(--font-weight-extrabold);
+  font-family: 'Dunkies', sans-serif;
+  font-size: 64px;
+  font-weight: normal;
   line-height: 1;
   margin-bottom: 24px;
   letter-spacing: var(--letter-spacing-tight);
-  text-transform: uppercase;
+  text-transform: none !important;
 }
 
 /* Lighter weight part of the headline */
@@ -95,6 +104,6 @@
 
   /* Larger headline on desktop */
   .hero__headline {
-    font-size: 64px;
+    font-size: 96px;
   }
 }

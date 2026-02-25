@@ -28,7 +28,7 @@ const Hero = ({ onOpenModal }) => {
       <BackgroundSlideshow images={heroImages} />
       <div className="hero__container">
         <h1 className="hero__headline">
-          CHAIT<span className="hero__headline-light">cuts</span><span className="hero__headline-bold">Hair</span>
+          Chait<span className="hero__headline-light">Cuts</span><span className="hero__headline-bold">Hair</span>
         </h1>
         <p className="hero__subheadline">
           Premium grooming services tailored for the modern gentleman.
