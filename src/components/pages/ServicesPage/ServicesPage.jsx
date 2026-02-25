@@ -15,7 +15,6 @@ import { getServices } from '../../../lib/supabaseClient';
 import './ServicesPage.css';
 
 const ServiceCard = ({ service, index, onBook }) => {
-  const [isHovered, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const cardRef = useRef(null);
 
@@ -47,9 +46,7 @@ const ServiceCard = ({ service, index, onBook }) => {
   return (
     <article
       ref={cardRef}
-      className={`services-page__card ${isVisible ? 'services-page__card--visible' : ''} ${isHovered ? 'services-page__card--hovered' : ''}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className={`services-page__card ${isVisible ? 'services-page__card--visible' : ''}`}
     >
       {/* Service Image */}
       {service.service_img && (
