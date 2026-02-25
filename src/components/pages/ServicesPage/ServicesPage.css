@@ -3,6 +3,14 @@
  * Editorial design with dramatic typography and smooth animations
  */
 
+/* Custom Font */
+@font-face {
+  font-family: 'Dunkies';
+  src: url('../../../assets/dunkies-font/DunkiesRegular-nAezJ.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* ========== SECTION BASE ========== */
 .services-page {
   position: relative;
@@ -116,8 +124,10 @@
 }
 
 .services-page__title-line--outline {
+  font-family: 'Dunkies', sans-serif;
   -webkit-text-stroke: 2px var(--color-black);
   color: transparent;
+  margin-top: 8px;
 }
 
 .services-page__subtitle {
