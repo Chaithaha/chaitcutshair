@@ -255,6 +255,57 @@
   text-decoration: line-through;
 }
 
+/* Date Grid */
+.booking-modal__date-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.booking-modal__date-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  background: none;
+  cursor: pointer;
+}
+
+.booking-modal__date-slot:hover {
+  border-color: var(--color-black, #000);
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.booking-modal__date-slot--selected {
+  background-color: var(--color-black, #000);
+  color: var(--color-white, #fff);
+  border-color: var(--color-black, #000);
+}
+
+.booking-modal__date-day {
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+}
+
+.booking-modal__date-num {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.booking-modal__date-month {
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+}
+
 /* Error */
 .booking-modal__error {
   padding: 0.75rem;

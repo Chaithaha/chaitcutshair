@@ -202,6 +202,76 @@ export const getWeeklyAvailability = async (barberId) => {
   return data;
 };
 
+// Get available dates for a barber within a date range
+export const getAvailableDates = async (barberId, startDate, endDate) => {
+  // Get weekly availability (default working days)
+  const { data: weeklyAvail, error: weeklyError } = await supabase
+    .from('weekly_availability')
+    .select('*')
+    .eq('barber_id', barberId);
+
+  if (weeklyError) throw weeklyError;
+
+  // Convert to a map for quick lookup
+  const weeklyMap = {};
+  weeklyAvail?.forEach(a => {
+    weeklyMap[a.day_of_week] = a;
+  });
+
+  // Get schedule overrides for the date range
+  const { data: schedules, error: schedulesError } = await supabase
+    .from('schedules')
+    .select('*')
+    .eq('barber_id', barberId)
+    .gte('date', startDate)
+    .lte('date', endDate);
+
+  if (schedulesError) throw schedulesError;
+
+  // Convert schedules to a map
+  const scheduleMap = {};
+  schedules?.forEach(s => {
+    scheduleMap[s.date] = s;
+  });
+
+  // Generate list of dates and their availability
+  const availableDates = [];
+  const current = new Date(startDate);
+  const end = new Date(endDate);
+
+  while (current <= end) {
+    const dateStr = current.toISOString().split('T')[0];
+    const dayOfWeek = current.getDay();
+    const schedule = scheduleMap[dateStr];
+    const weekly = weeklyMap[dayOfWeek];
+
+    // Determine availability:
+    // - If schedule exists, use its is_available
+    // - Else if weekly availability exists and is_available, date is available
+    // - Else not available
+    let isAvailable = false;
+
+    if (schedule) {
+      isAvailable = schedule.is_available;
+    } else if (weekly?.is_available) {
+      isAvailable = true;
+    }
+
+    if (isAvailable) {
+      availableDates.push({
+        date: dateStr,
+        dayName: current.toLocaleDateString('en-US', { weekday: 'short' }),
+        dayNum: current.getDate(),
+        month: current.toLocaleDateString('en-US', { month: 'short' }),
+      });
+    }
+
+    current.setDate(current.getDate() + 1);
+  }
+
+  return availableDates;
+};
+
 export const updateWeeklyAvailability = async (barberId, dayOfWeek, updates) => {
   const { data, error } = await supabase
     .from('weekly_availability')

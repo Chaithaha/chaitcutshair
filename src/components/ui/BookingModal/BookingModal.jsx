@@ -13,7 +13,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { getBarbers, getServices, getAvailableSlots, createAppointment } from '../../../lib/supabaseClient';
+import { getBarbers, getServices, getAvailableSlots, getAvailableDates, createAppointment } from '../../../lib/supabaseClient';
 import './BookingModal.css';
 
 const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }) => {
@@ -22,10 +22,12 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }
   const [services, setServices] = useState([]);
   const [selectedBarber, setSelectedBarber] = useState(null);
   const [availableSlots, setAvailableSlots] = useState([]);
+  const [availableDates, setAvailableDates] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingBarbers, setLoadingBarbers] = useState(true);
   const [loadingServices, setLoadingServices] = useState(true);
   const [loadingSlots, setLoadingSlots] = useState(false);
+  const [loadingDates, setLoadingDates] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
 
@@ -70,6 +72,31 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }
     }
   }, [preselectedBarber, isOpen]);
 
+  // Load available dates when barber is selected
+  useEffect(() => {
+    const fetchAvailableDates = async () => {
+      if (selectedBarber && step === 2) {
+        setLoadingDates(true);
+        try {
+          const today = new Date().toISOString().split('T')[0];
+          const maxDate = new Date();
+          maxDate.setDate(maxDate.getDate() + 30);
+          const maxDateStr = maxDate.toISOString().split('T')[0];
+
+          const dates = await getAvailableDates(selectedBarber.id, today, maxDateStr);
+          setAvailableDates(dates);
+        } catch (err) {
+          console.error('Failed to load available dates:', err);
+          setAvailableDates([]);
+        } finally {
+          setLoadingDates(false);
+        }
+      }
+    };
+
+    fetchAvailableDates();
+  }, [selectedBarber, step]);
+
   // Handle preselected service
   useEffect(() => {
     if (preselectedService && isOpen) {
@@ -94,6 +121,7 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }
       setError(null);
       setSuccess(false);
       setAvailableSlots([]);
+      setAvailableDates([]);
     }
   }, [isOpen]);
 
@@ -163,17 +191,6 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }
     } finally {
       setLoading(false);
     }
-  };
-
-  const getMinDate = () => {
-    const today = new Date();
-    return today.toISOString().split('T')[0];
-  };
-
-  const getMaxDate = () => {
-    const maxDate = new Date();
-    maxDate.setDate(maxDate.getDate() + 30);
-    return maxDate.toISOString().split('T')[0];
   };
 
   const formatTime = (time) => {
@@ -321,14 +338,28 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }
               {/* Date Selection */}
               <div className="booking-modal__field">
                 <label>Select Date</label>
-                <input
-                  type="date"
-                  min={getMinDate()}
-                  max={getMaxDate()}
-                  value={formData.date}
-                  onChange={(e) => handleDateChange(e.target.value)}
-                  required
-                />
+                {loadingDates ? (
+                  <p className="booking-modal__loading">Loading available dates...</p>
+                ) : availableDates.length === 0 ? (
+                  <p className="booking-modal__no-slots">No available dates for this barber in the next 30 days.</p>
+                ) : (
+                  <div className="booking-modal__date-grid">
+                    {availableDates.map((d) => (
+                      <button
+                        key={d.date}
+                        type="button"
+                        onClick={() => handleDateChange(d.date)}
+                        className={`booking-modal__date-slot ${
+                          formData.date === d.date ? 'booking-modal__date-slot--selected' : ''
+                        }`}
+                      >
+                        <span className="booking-modal__date-day">{d.dayName}</span>
+                        <span className="booking-modal__date-num">{d.dayNum}</span>
+                        <span className="booking-modal__date-month">{d.month}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Time Selection */}
