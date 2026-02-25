@@ -3,48 +3,21 @@
  *
  * Team showcase with editorial portrait layout:
  * - Asymmetric staggered grid
- * - Reveal animations on scroll
  * - Hover state with specialty highlight
  * - Placeholder avatars with elegant fallback
  *
  * @returns {JSX.Element} The barbers page
  */
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { getBarbers } from '../../../lib/supabaseClient';
 import './BarbersPage.css';
 
 const BarberCard = ({ barber, index, onBook }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const cardRef = useRef(null);
-
   const barberName = `${barber.first_name} ${barber.last_name}`;
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setTimeout(() => setIsVisible(true), index * 150);
-            observer.disconnect();
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [index]);
-
   return (
-    <article
-      ref={cardRef}
-      className={`barbers-page__card ${isVisible ? 'barbers-page__card--visible' : ''}`}
-    >
+    <article className="barbers-page__card">
       {/* Image/Placeholder */}
       <div className="barbers-page__card-image">
         {barber.profile_img ? (
@@ -92,8 +65,6 @@ const BarbersPage = ({ onBookBarber }) => {
   const [barbers, setBarbers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [headerVisible, setHeaderVisible] = useState(false);
-  const headerRef = useRef(null);
 
   useEffect(() => {
     const fetchBarbers = async () => {
@@ -112,26 +83,6 @@ const BarbersPage = ({ onBookBarber }) => {
     fetchBarbers();
   }, []);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setHeaderVisible(true);
-            observer.disconnect();
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    if (headerRef.current) {
-      observer.observe(headerRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <section className="barbers-page" id="barbers">
       {/* Grain Texture */}
@@ -142,7 +93,7 @@ const BarbersPage = ({ onBookBarber }) => {
 
       <div className="barbers-page__container">
         {/* Header */}
-        <header ref={headerRef} className={`barbers-page__header ${headerVisible ? 'barbers-page__header--visible' : ''}`}>
+        <header className="barbers-page__header">
           <div className="barbers-page__header-accent">
             <div className="barbers-page__header-accent-line"></div>
             <span>The Team</span>
