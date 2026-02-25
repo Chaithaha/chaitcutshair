@@ -50,7 +50,6 @@
   flex-direction: column;
   justify-content: space-between;
   height: 320px;
-  transition: background-color var(--transition-slow), color var(--transition-slow), border-color var(--transition-slow);
 }
 
 /* Top part of card with number, title, description */
@@ -91,7 +90,6 @@
   align-items: flex-end;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 24px;
-  transition: border-color var(--transition-slow);
 }
 
 /* Service price */
@@ -107,7 +105,6 @@
   font-size: 10px;
   letter-spacing: 0.2em;
   border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-  transition: border-color var(--transition-slow);
 }
 
 /* Card hover effect */

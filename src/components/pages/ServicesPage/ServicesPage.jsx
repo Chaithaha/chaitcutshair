@@ -10,44 +10,18 @@
  * @returns {JSX.Element} The services page
  */
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { getServices } from '../../../lib/supabaseClient';
 import './ServicesPage.css';
 
 const ServiceCard = ({ service, index, onBook }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const cardRef = useRef(null);
-
   const serviceNumber = String(index + 1).padStart(2, '0');
   const durationDisplay = service.duration >= 60
     ? `${Math.floor(service.duration / 60)}h ${service.duration % 60}m`
     : `${service.duration} min`;
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setTimeout(() => setIsVisible(true), index * 100);
-            observer.disconnect();
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [index]);
-
   return (
-    <article
-      ref={cardRef}
-      className={`services-page__card ${isVisible ? 'services-page__card--visible' : ''}`}
-    >
+    <article className="services-page__card">
       {/* Service Image */}
       {service.service_img && (
         <div className="services-page__card-image">
@@ -101,8 +75,6 @@ const ServicesPage = ({ onBookService }) => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [headerVisible, setHeaderVisible] = useState(false);
-  const headerRef = useRef(null);
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -120,26 +92,6 @@ const ServicesPage = ({ onBookService }) => {
     fetchServices();
   }, []);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setHeaderVisible(true);
-            observer.disconnect();
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    if (headerRef.current) {
-      observer.observe(headerRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <section className="services-page" id="services-page">
       {/* Grain Texture */}
@@ -154,7 +106,7 @@ const ServicesPage = ({ onBookService }) => {
 
       <div className="services-page__container">
         {/* Header */}
-        <header ref={headerRef} className={`services-page__header ${headerVisible ? 'services-page__header--visible' : ''}`}>
+        <header className="services-page__header">
           <h1 className="services-page__title">
             <span className="services-page__title-line">Premium</span>
             <span className="services-page__title-line services-page__title-line--outline">Grooming</span>

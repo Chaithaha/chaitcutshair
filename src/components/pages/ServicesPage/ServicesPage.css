@@ -80,14 +80,6 @@
 .services-page__header {
   text-align: center;
   margin-bottom: 80px;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.services-page__header--visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .services-page__header-badge {
@@ -153,14 +145,6 @@
   border: 1px solid rgba(0, 0, 0, 0.1);
   cursor: pointer;
   overflow: hidden;
-  opacity: 0;
-  transform: translateY(40px);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.services-page__card--visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 
