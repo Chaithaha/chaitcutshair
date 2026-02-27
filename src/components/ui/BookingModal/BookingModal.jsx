@@ -162,8 +162,41 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.serviceId || !formData.date || !formData.time || !formData.firstName || !formData.lastName || !formData.email) {
-      setError('Please fill in all required fields');
+    // JavaScript validation
+    if (!formData.serviceId) {
+      setError('Please select a service');
+      return;
+    }
+
+    if (!formData.date) {
+      setError('Please select a date');
+      return;
+    }
+
+    if (!formData.time) {
+      setError('Please select a time');
+      return;
+    }
+
+    if (!formData.firstName.trim()) {
+      setError('First name is required');
+      return;
+    }
+
+    if (!formData.lastName.trim()) {
+      setError('Last name is required');
+      return;
+    }
+
+    if (!formData.email.trim()) {
+      setError('Email is required');
+      return;
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email.trim())) {
+      setError('Please enter a valid email address');
       return;
     }
 
@@ -324,7 +357,6 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }
                 <select
                   value={formData.serviceId}
                   onChange={(e) => setFormData({ ...formData, serviceId: e.target.value })}
-                  required
                 >
                   <option value="">Choose a service</option>
                   {services.map((service) => (
@@ -448,7 +480,6 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }
                   value={formData.firstName}
                   onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                   placeholder="John"
-                  required
                 />
               </div>
 
@@ -459,18 +490,16 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }
                   value={formData.lastName}
                   onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                   placeholder="Doe"
-                  required
                 />
               </div>
 
               <div className="booking-modal__field">
                 <label>Email</label>
                 <input
-                  type="email"
+                  type="text"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   placeholder="john@example.com"
-                  required
                 />
               </div>
 

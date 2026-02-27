@@ -35,6 +35,30 @@ const BarberForm = ({ barber, onClose, onSave }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // JavaScript validation
+    if (!formData.firstName.trim()) {
+      setError('First name is required');
+      return;
+    }
+
+    if (!formData.lastName.trim()) {
+      setError('Last name is required');
+      return;
+    }
+
+    if (!formData.email.trim()) {
+      setError('Email is required');
+      return;
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email.trim())) {
+      setError('Please enter a valid email address');
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -118,22 +142,21 @@ const BarberForm = ({ barber, onClose, onSave }) => {
         <form className="barber-form__form" onSubmit={handleSubmit}>
           <div className="barber-form__field">
             <label>First Name</label>
-            <input type="text" value={formData.firstName} onChange={handleChange('firstName')} required />
+            <input type="text" value={formData.firstName} onChange={handleChange('firstName')} />
           </div>
 
           <div className="barber-form__field">
             <label>Last Name</label>
-            <input type="text" value={formData.lastName} onChange={handleChange('lastName')} required />
+            <input type="text" value={formData.lastName} onChange={handleChange('lastName')} />
           </div>
 
           <div className="barber-form__field">
             <label>Email</label>
             <input
-              type="email"
+              type="text"
               value={formData.email}
               onChange={handleChange('email')}
               placeholder="chaitcutshair@omgchait.com"
-              required
             />
           </div>
 
