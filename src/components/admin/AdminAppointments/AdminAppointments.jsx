@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getAllAppointments } from '../../../lib/supabaseClient';
+import { getAllAppointments, updateAppointment } from '../../../lib/supabaseClient';
 import AppointmentDetail from '../AppointmentDetail/AppointmentDetail';
 import './AdminAppointments.css';
 
@@ -35,6 +35,15 @@ const AdminAppointments = () => {
 
   const clearFilters = () => {
     setFilters({ status: '', dateFrom: '', dateTo: '' });
+  };
+
+  const handleStatusUpdate = async (id, newStatus) => {
+    try {
+      await updateAppointment(id, { status: newStatus });
+      loadAppointments();
+    } catch (err) {
+      console.error('Failed to update status:', err);
+    }
   };
 
   const formatDate = (dateStr) => {
@@ -101,6 +110,7 @@ const AdminAppointments = () => {
             <div>Customer</div>
             <div>Barber</div>
             <div>Service</div>
+            <div>Status</div>
             <div></div>
           </div>
 
@@ -117,7 +127,30 @@ const AdminAppointments = () => {
                 {apt.barber?.first_name} {apt.barber?.last_name}
               </div>
               <div>{apt.service?.name}</div>
-              <div>
+              <div onClick={(e) => e.stopPropagation()}>
+                {apt.status === 'pending' ? (
+                  <>
+                    <button
+                      className="admin-appointments__accept"
+                      onClick={() => handleStatusUpdate(apt.id, 'confirmed')}
+                    >
+                      Accept
+                    </button>
+                    <span className="admin-appointments__separator">|</span>
+                    <button
+                      className="admin-appointments__reject"
+                      onClick={() => handleStatusUpdate(apt.id, 'cancelled')}
+                    >
+                      Reject
+                    </button>
+                  </>
+                ) : (
+                  <span className={`status-badge status-${apt.status}`}>
+                    {apt.status}
+                  </span>
+                )}
+              </div>
+              <div onClick={(e) => e.stopPropagation()}>
                 <button className="admin-appointments__edit">Edit</button>
               </div>
             </div>
