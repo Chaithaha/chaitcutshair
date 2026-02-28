@@ -56,11 +56,6 @@
   background: #f5f5f5;
 }
 
-.admin-appointments__row:not(.admin-appointments__row--header):hover {
-  background: #fafafa;
-  cursor: pointer;
-}
-
 .admin-appointments__edit {
   font-size: 10px;
   font-weight: 700;

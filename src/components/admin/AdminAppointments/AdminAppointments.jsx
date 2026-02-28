@@ -118,7 +118,6 @@ const AdminAppointments = () => {
             <div
               key={apt.id}
               className="admin-appointments__row"
-              onClick={() => setSelectedAppointment(apt)}
             >
               <div>{formatDate(apt.appt_time)}</div>
               <div>{formatTime(apt.appt_time)}</div>
@@ -151,7 +150,12 @@ const AdminAppointments = () => {
                 )}
               </div>
               <div onClick={(e) => e.stopPropagation()}>
-                <button className="admin-appointments__edit">Edit</button>
+                <button
+                  className="admin-appointments__edit"
+                  onClick={() => setSelectedAppointment(apt)}
+                >
+                  Edit
+                </button>
               </div>
             </div>
           ))}
