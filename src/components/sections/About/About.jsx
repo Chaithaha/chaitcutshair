@@ -11,6 +11,7 @@
  */
 
 import { useState, useEffect, useRef } from 'react';
+import { getBarberCount } from '../../../lib/supabaseClient';
 import './About.css';
 
 /* Animated stat component with countdown and pulse */
@@ -75,6 +76,16 @@ const AnimatedStat = ({ target, suffix, label }) => {
 };
 
 const About = () => {
+  const [barberCount, setBarberCount] = useState(10); // default fallback
+
+  useEffect(() => {
+    getBarberCount()
+      .then(setBarberCount)
+      .catch(() => {
+        // Keep the default of 10 if fetch fails
+      });
+  }, []);
+
   return (
     <section className="about" id="about">
       <div className="about__grain"></div>
@@ -120,7 +131,7 @@ const About = () => {
 
             {/* Stats */}
             <div className="about__stats">
-              <AnimatedStat target={10} suffix="+" label="Expert Barbers" />
+              <AnimatedStat target={barberCount} suffix="" label="Expert Barbers" />
               <div className="about__stats-divider"></div>
               <AnimatedStat target={5} suffix="k+" label="Happy Clients" />
             </div>

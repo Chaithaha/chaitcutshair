@@ -21,6 +21,17 @@ export const getBarbers = async () => {
   return data;
 };
 
+// Get count of active barbers
+export const getBarberCount = async () => {
+  const { count, error } = await supabase
+    .from('barbers')
+    .select('*', { count: 'exact', head: true })
+    .eq('is_active', true);
+
+  if (error) throw error;
+  return count || 0;
+};
+
 // Helper functions for services
 export const getServices = async () => {
   const { data, error } = await supabase
