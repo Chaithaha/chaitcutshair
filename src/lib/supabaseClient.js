@@ -129,7 +129,7 @@ export const createAppointment = async (appointmentData) => {
       customer_phone: phone || null,
       appt_time: apptTime.toISOString(),
       end_time: endTime.toISOString(),
-      status: 'confirmed',
+      status: 'pending',
     })
     .select(`
       *,
