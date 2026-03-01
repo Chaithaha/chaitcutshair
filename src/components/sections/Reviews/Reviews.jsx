@@ -43,7 +43,7 @@ const Reviews = () => {
           <h2 className="reviews__title">What Our Clients Say</h2>
         </div>
 
-        <div className="elfsight-app-05f2b6af-0fe1-427f-bf35-055ea865ee46" data-elfsight-app-lazy></div>
+        <div className="elfsight-app-09fd5996-87ac-4d34-a6a0-dce13ffcc746" data-elfsight-app-lazy></div>
       </div>
     </section>
   );
