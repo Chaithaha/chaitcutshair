@@ -102,7 +102,7 @@ export const getAvailableSlots = async (barberId, date) => {
 
 // Create a new appointment
 export const createAppointment = async (appointmentData) => {
-  const { barberId, serviceId, date, time, firstName, lastName, email, phone } = appointmentData;
+  const { barberId, serviceId, date, time, firstName, lastName, email, phone, formattedTime, formattedDate } = appointmentData;
 
   // Get service duration
   const { data: service, error: serviceError } = await supabase
@@ -145,7 +145,11 @@ export const createAppointment = async (appointmentData) => {
     await supabase.functions.invoke('send-booking-email', {
       body: {
         type: 'new_booking',
-        appointment: data,
+        appointment: {
+          ...data,
+          formatted_time: formattedTime,
+          formatted_date: formattedDate,
+        },
         barberEmail: data.barber.email,
       },
     });

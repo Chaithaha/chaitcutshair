@@ -221,6 +221,19 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }
     setLoading(true);
 
     try {
+      // Format date/time on client side for email (preserves user's timezone)
+      const appointmentDateTime = new Date(`${formData.date}T${formData.time}:00`);
+      const formattedTime = appointmentDateTime.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+      });
+      const formattedDate = appointmentDateTime.toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      });
+
       await createAppointment({
         barberId: selectedBarber.id,
         serviceId: formData.serviceId,
@@ -230,6 +243,8 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }
         lastName: formData.lastName,
         email: formData.email,
         phone: formData.phone,
+        formattedTime,
+        formattedDate,
       });
 
       setSuccess(true);
@@ -249,6 +264,20 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }
     const ampm = hour >= 12 ? 'PM' : 'AM';
     const hour12 = hour % 12 || 12;
     return `${hour12}:00 ${ampm}`;
+  };
+
+  const isSlotInPast = (dateStr, timeStr) => {
+    const now = new Date();
+    const today = now.toISOString().split('T')[0];
+
+    // Only check time if it's today
+    if (dateStr !== today) return false;
+
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    const slotTime = new Date();
+    slotTime.setHours(hours, minutes, 0, 0);
+
+    return slotTime < now;
   };
 
   if (!isOpen) return null;
@@ -473,19 +502,24 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }
                     <p className="booking-modal__no-slots">No available slots for this date. Please select another date.</p>
                   ) : (
                     <div className="booking-modal__time-grid">
-                      {availableSlots.map((slot) => (
-                        <button
-                          key={slot.start_time}
-                          type="button"
-                          disabled={!slot.is_available}
-                          onClick={() => setFormData({ ...formData, time: slot.start_time })}
-                          className={`booking-modal__time-slot ${
-                            formData.time === slot.start_time ? 'booking-modal__time-slot--selected' : ''
-                          } ${!slot.is_available ? 'booking-modal__time-slot--unavailable' : ''}`}
-                        >
-                          {formatTime(slot.start_time)}
-                        </button>
-                      ))}
+                      {availableSlots.map((slot) => {
+                        const isPast = isSlotInPast(formData.date, slot.start_time);
+                        const isUnavailable = !slot.is_available || isPast;
+
+                        return (
+                          <button
+                            key={slot.start_time}
+                            type="button"
+                            disabled={isUnavailable}
+                            onClick={() => setFormData({ ...formData, time: slot.start_time })}
+                            className={`booking-modal__time-slot ${
+                              formData.time === slot.start_time ? 'booking-modal__time-slot--selected' : ''
+                            } ${isUnavailable ? 'booking-modal__time-slot--unavailable' : ''}`}
+                          >
+                            {formatTime(slot.start_time)}
+                          </button>
+                        );
+                      })}
                     </div>
                   )}
                 </div>

@@ -48,13 +48,14 @@ serve(async (req) => {
     const { type, appointment, barberEmail } = await req.json();
 
     if (type === 'new_booking') {
-      const dateStr = new Date(appointment.appt_time).toLocaleDateString('en-US', {
+      // Use client-formatted strings if available (preserves user's timezone)
+      const dateStr = appointment.formatted_date || new Date(appointment.appt_time).toLocaleDateString('en-US', {
         weekday: 'long',
         month: 'long',
         day: 'numeric',
         year: 'numeric',
       });
-      const timeStr = new Date(appointment.appt_time).toLocaleTimeString('en-US', {
+      const timeStr = appointment.formatted_time || new Date(appointment.appt_time).toLocaleTimeString('en-US', {
         hour: 'numeric',
         minute: '2-digit',
       });
