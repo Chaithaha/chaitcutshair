@@ -152,6 +152,9 @@ export const createAppointment = async (appointmentData) => {
         },
         barberEmail: data.barber.email,
       },
+      headers: {
+        Authorization: `Bearer ${supabaseAnonKey}`,
+      },
     });
   } catch (emailError) {
     console.error('Failed to send email:', emailError);
