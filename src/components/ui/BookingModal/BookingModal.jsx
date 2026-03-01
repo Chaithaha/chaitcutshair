@@ -23,6 +23,7 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }
   const [selectedBarber, setSelectedBarber] = useState(null);
   const [availableSlots, setAvailableSlots] = useState([]);
   const [availableDates, setAvailableDates] = useState([]);
+  const [currentMonth, setCurrentMonth] = useState(new Date());
   const [loading, setLoading] = useState(false);
   const [loadingBarbers, setLoadingBarbers] = useState(true);
   const [loadingServices, setLoadingServices] = useState(true);
@@ -72,18 +73,18 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }
     }
   }, [preselectedBarber, isOpen]);
 
-  // Load available dates when barber is selected
+  // Load available dates when barber is selected or month changes
   useEffect(() => {
     const fetchAvailableDates = async () => {
       if (selectedBarber && step === 2) {
         setLoadingDates(true);
         try {
-          const today = new Date().toISOString().split('T')[0];
-          const maxDate = new Date();
-          maxDate.setDate(maxDate.getDate() + 30);
-          const maxDateStr = maxDate.toISOString().split('T')[0];
+          const firstDayOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
+          const lastDayOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
+          const minDateStr = firstDayOfMonth.toISOString().split('T')[0];
+          const maxDateStr = lastDayOfMonth.toISOString().split('T')[0];
 
-          const dates = await getAvailableDates(selectedBarber.id, today, maxDateStr);
+          const dates = await getAvailableDates(selectedBarber.id, minDateStr, maxDateStr);
           setAvailableDates(dates);
         } catch (err) {
           console.error('Failed to load available dates:', err);
@@ -95,7 +96,7 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }
     };
 
     fetchAvailableDates();
-  }, [selectedBarber, step]);
+  }, [selectedBarber, step, currentMonth]);
 
   // Handle preselected service
   useEffect(() => {
@@ -109,6 +110,7 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }
     if (!isOpen) {
       setStep(1);
       setSelectedBarber(null);
+      setCurrentMonth(new Date());
       setFormData({
         serviceId: '',
         date: '',
@@ -157,6 +159,21 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }
 
   const handleDateChange = (date) => {
     setFormData((prev) => ({ ...prev, date, time: '' }));
+  };
+
+  const handlePreviousMonth = () => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
+  };
+
+  const handleNextMonth = () => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
+  };
+
+  const isMonthInPast = (date) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const firstOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+    return firstOfMonth < today;
   };
 
   const handleSubmit = async (e) => {
@@ -372,18 +389,25 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }
                 <label>Select Date</label>
                 {loadingDates ? (
                   <p className="booking-modal__loading">Loading available dates...</p>
-                ) : availableDates.length === 0 ? (
-                  <p className="booking-modal__no-slots">No available dates for this barber in the next 30 days.</p>
                 ) : (
                   <div className="booking-modal__calendar">
                     <div className="booking-modal__calendar-header">
-                      <button type="button" onClick={() => {}} disabled className="booking-modal__calendar-nav">
+                      <button
+                        type="button"
+                        onClick={handlePreviousMonth}
+                        disabled={isMonthInPast(currentMonth)}
+                        className="booking-modal__calendar-nav"
+                      >
                         ‹
                       </button>
                       <span className="booking-modal__calendar-month">
-                        {new Date(availableDates[0]?.date).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                        {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
                       </span>
-                      <button type="button" onClick={() => {}} disabled className="booking-modal__calendar-nav">
+                      <button
+                        type="button"
+                        onClick={handleNextMonth}
+                        className="booking-modal__calendar-nav"
+                      >
                         ›
                       </button>
                     </div>
@@ -395,15 +419,11 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }
                     <div className="booking-modal__calendar-days">
                       {(() => {
                         const availableSet = new Set(availableDates.map(d => d.date));
-                        const firstDate = new Date(availableDates[0]?.date);
-                        const year = firstDate.getFullYear();
-                        const month = firstDate.getMonth();
+                        const year = currentMonth.getFullYear();
+                        const month = currentMonth.getMonth();
                         const firstDayOfMonth = new Date(year, month, 1).getDay();
                         const daysInMonth = new Date(year, month + 1, 0).getDate();
                         const today = new Date().toISOString().split('T')[0];
-                        const maxDate = new Date();
-                        maxDate.setDate(maxDate.getDate() + 30);
-                        const maxDateStr = maxDate.toISOString().split('T')[0];
 
                         const days = [];
 
@@ -417,19 +437,18 @@ const BookingModal = ({ isOpen, onClose, preselectedBarber, preselectedService }
                           const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                           const isAvailable = availableSet.has(dateStr);
                           const isPast = dateStr < today;
-                          const isBeyondRange = dateStr > maxDateStr;
                           const isSelected = formData.date === dateStr;
 
                           days.push(
                             <button
                               key={day}
                               type="button"
-                              disabled={!isAvailable || isPast || isBeyondRange}
+                              disabled={!isAvailable || isPast}
                               onClick={() => handleDateChange(dateStr)}
                               className={`booking-modal__calendar-day ${
                                 isSelected ? 'booking-modal__calendar-day--selected' : ''
                               } ${
-                                !isAvailable || isPast || isBeyondRange ? 'booking-modal__calendar-day--disabled' : ''
+                                !isAvailable || isPast ? 'booking-modal__calendar-day--disabled' : ''
                               }`}
                             >
                               {day}
